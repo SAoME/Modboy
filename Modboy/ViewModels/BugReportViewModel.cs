@@ -111,7 +111,7 @@ namespace Modboy.ViewModels
 
             // Send
             await _taskFactory.StartNew(
-                () => _apiService.ReportException(Settings.Stager.Current.UserID, Message, systemInfo, Exception, logDump, databaseDump, MailBack));
+                () => _apiService.ReportException(Message, systemInfo, Exception, logDump, databaseDump, MailBack));
 
             // Report completion
             await _windowService.ShowNotificationWindowAsync(Localization.BugReport_ReportSent);

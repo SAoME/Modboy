@@ -18,9 +18,6 @@ namespace Modboy.Services
     public class APIService
     {
         // ReSharper disable InconsistentNaming
-        private const string URLAPIAuth =
-            "http://api.gamebanana.com/Core/Member/Authenticate?username={0}&password={1}";
-        private const string URLAPIGetUserID = "http://api.gamebanana.com/Core/Member/Identify?username={0}";
         private const string URLAPIGetInstallCommands =
             "http://api.gamebanana.com/Modboy/InstallMod?id={0}&os=windows";
         private const string URLAPIGetVerifyData = "http://api.gamebanana.com/Modboy/VerifyMod?id={0}&os=windows";
@@ -41,37 +38,6 @@ namespace Modboy.Services
         {
             // Delegates
             _webService.AbortChecker = AbortChecker;
-        }
-
-        /// <summary>
-        /// API Endpoint to check if the given credentials are matching
-        /// </summary>
-        public bool CheckCredentials(AuthorizationInfo auth)
-        {
-            // HACK: SECURITY ANYONE?
-            string response = _webService.Get(string.Format(
-                URLAPIAuth,
-                auth.Username.UrlEncode(),
-                auth.Password.UrlEncode()));
-            if (response == null) return false;
-
-            response = response.Except("[", "]");
-            return JsonConvert.DeserializeObject<bool>(response);
-        }
-
-        /// <summary>
-        /// API Endpoint to get the user id by user name
-        /// </summary>
-        public string GetUserID(string username)
-        {
-            // HACK: SECURITY ANYONE?
-            string response = _webService.Get(string.Format(
-                URLAPIGetUserID,
-                username.UrlEncode()));
-            if (response == null) return null;
-
-            response = response.Except("[", "]");
-            return JsonConvert.DeserializeObject<string>(response);
         }
 
         /// <summary>
@@ -119,7 +85,7 @@ namespace Modboy.Services
             string serializedData = JsonConvert.SerializeObject(new
             {
                 Settings.Stager.Current.ComputerName,
-                Settings.Stager.Current.UserID,
+                UserID = 0.ToString(),
                 Action = taskType.ToString(),
                 ModID = modID
             });
@@ -134,14 +100,14 @@ namespace Modboy.Services
         /// <summary>
         /// Endpoint to report an exception to the server
         /// </summary>
-        public void ReportException(string userID, string message, string systemInfo, Exception exception, string logDump, string databaseDump, string mailBack)
+        public void ReportException(string message, string systemInfo, Exception exception, string logDump, string databaseDump, string mailBack)
         {
             // Serialize
             string serializedData = JsonConvert.SerializeObject(new
             {
                 Version = App.CurrentVersion.ToString(),
                 ReportDateUTC = DateTime.UtcNow,
-                User = userID,
+                User = 0.ToString(),
                 Message = message,
                 SystemInfo = systemInfo,
                 Exception = exception ?? new Exception("User-initiated bug report"),

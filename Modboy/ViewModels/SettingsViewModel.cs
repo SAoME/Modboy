@@ -25,7 +25,6 @@ namespace Modboy.ViewModels
     public class SettingsViewModel : ViewModelBase
     {
         private readonly AliasService _aliasService;
-        private readonly AuthService _authService;
         private readonly WindowService _windowService;
 
         public Localization Localization { get; } = Localization.Current;
@@ -39,9 +38,6 @@ namespace Modboy.ViewModels
         private bool _userAliasesHandled;
 
         // Commands
-        public RelayCommand<AuthorizationInfo> LogInCommand { get; }
-        public RelayCommand LogOutCommand { get; }
-
         public RelayCommand LocateTempDownloadPathCommand { get; }
         public RelayCommand LocateBackupPathCommand { get; }
 
@@ -49,16 +45,12 @@ namespace Modboy.ViewModels
         public RelayCommand ResetDefaultsCommand { get; }
         public RelayCommand CancelCommand { get; }
 
-        public SettingsViewModel(AliasService aliasService, AuthService authService, WindowService windowService)
+        public SettingsViewModel(AliasService aliasService, WindowService windowService)
         {
             _aliasService = aliasService;
-            _authService = authService;
             _windowService = windowService;
 
             // Commands
-            LogInCommand = new RelayCommand<AuthorizationInfo>(LogIn, a => !StagingSettings.IsAuthorized);
-            LogOutCommand = new RelayCommand(LogOut, () => StagingSettings.IsAuthorized);
-
             LocateTempDownloadPathCommand = new RelayCommand(LocateTempDownloadPath);
             LocateBackupPathCommand = new RelayCommand(LocateBackupPath, () => StagingSettings.UseBackup);
 
@@ -72,41 +64,6 @@ namespace Modboy.ViewModels
 
             // Initial
             GetUserAliases();
-        }
-
-        private void LogIn(AuthorizationInfo auth)
-        {
-            // Log in
-            string userID = _authService.LogIn(auth);
-            if (userID.IsBlank())
-            {
-                _windowService.ShowErrorWindowAsync(Localization.Settings_AuthFailed).GetResult();
-                return;
-            }
-
-            // Prompt user
-            if (!_windowService.ShowPromptWindowAsync(Localization.Settings_NeedSaveSettingsPrompt).GetResult())
-            {
-                return;
-            }
-
-            // Store data
-            StagingSettings.UserName = auth.Username;
-            StagingSettings.UserID = userID;
-            Save();
-        }
-
-        private void LogOut()
-        {
-            // Prompt user
-            if (!_windowService.ShowPromptWindowAsync(Localization.Settings_NeedSaveSettingsPrompt).GetResult())
-            {
-                return;
-            }
-
-            // Store data
-            StagingSettings.UserID = StagingSettings.UserName = null;
-            Save();
         }
 
         private void LocateTempDownloadPath()

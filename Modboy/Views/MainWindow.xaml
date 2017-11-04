@@ -77,24 +77,6 @@
                     <Run Text="ver." />
                     <Run Foreground="{DynamicResource PrimaryInverseTextBrush}" Text="{Binding AppVersion, Mode=OneWay}" />
                 </TextBlock>
-                <TextBlock HorizontalAlignment="Right"
-                           VerticalAlignment="Center"
-                           DockPanel.Dock="Right"
-                           FontSize="12"
-                           Visibility="{Binding Settings.IsAuthorized,
-                                                Converter={StaticResource BoolToVisibilityConverter}}">
-                    <Run Text="{Binding Localization.Main_LoggedInAs, Mode=OneWay}" />
-                    <Run Cursor="Hand"
-                         Foreground="{DynamicResource AccentTextBrush}"
-                         Text="{Binding Settings.UserName,
-                                        Mode=OneWay}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="PreviewMouseLeftButtonDown">
-                                <mvvm:EventToCommand Command="{Binding OpenProfileCommand}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Run>
-                </TextBlock>
             </DockPanel>
         </Border>
 

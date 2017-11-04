@@ -54,20 +54,6 @@ namespace Modboy.Services
         public Task Task { get; private set; }
 
         /// <summary>
-        /// Gets or sets whether the next task in the queue should be executed (publically at dawn)
-        /// </summary>
-        public bool IsEnabled
-        {
-            get { return _isEnabled; }
-            set
-            {
-                _isEnabled = value;
-                if (value)
-                    TryPopQueue();
-            }
-        }
-
-        /// <summary>
         /// Whether the task is currently being aborted
         /// </summary>
         public bool IsAbortPending { get; private set; }
@@ -137,9 +123,6 @@ namespace Modboy.Services
         /// </summary>
         private void PopQueue()
         {
-            if (!IsEnabled)
-                return;
-
             lock (_taskQueue)
             {
                 Task = null;
@@ -176,7 +159,7 @@ namespace Modboy.Services
         /// <summary>
         /// Pops queue if a task isn't already executing
         /// </summary>
-        private void TryPopQueue()
+        public void TryPopQueue()
         {
             lock (_taskQueue)
             {

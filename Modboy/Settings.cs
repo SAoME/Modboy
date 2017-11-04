@@ -8,7 +8,6 @@
 
 using System;
 using System.IO;
-using NegativeLayer.Extensions;
 using NegativeLayer.Settings;
 
 namespace Modboy
@@ -19,9 +18,6 @@ namespace Modboy
 
         #region Properties
 
-        private bool _isAuthorized;
-        private string _userID;
-        private string _userName;
         private string _language;
         private string _computerName;
         private string _tempDownloadPath;
@@ -29,28 +25,6 @@ namespace Modboy
         private string _backupPath;
         private bool _showNotifications;
         private bool _autoUpdate;
-
-        public bool IsAuthorized
-        {
-            get { return _isAuthorized; }
-            private set { Set(ref _isAuthorized, value); }
-        }
-
-        public string UserID
-        {
-            get { return _userID; }
-            set
-            {
-                IsAuthorized = value.IsNotBlank();
-                Set(ref _userID, value);
-            }
-        }
-
-        public string UserName
-        {
-            get { return _userName; }
-            set { Set(ref _userName, value); }
-        }
 
         public string Language
         {

@@ -61,9 +61,6 @@ namespace Modboy
         public string Global_Yes { get; set; } = "Yes";
         public string Global_No { get; set; } = "No";
 
-        public string Auth_NotLoggedIn { get; set; } =
-            "You are not logged in. Please log in to your GameBanana account to use Modboy. Proceed to Settings to authorize.";
-
         public string Command_Copy_SelectSource { get; set; } = "Select the copy source from one of the options";
 
         public string Task_Verify { get; set; } = "Verifying...";
@@ -98,7 +95,6 @@ namespace Modboy
         public string Main_Overview { get; set; } = "Mods";
         public string Main_History { get; set; } = "History";
         public string Main_Settings { get; set; } = "Settings";
-        public string Main_LoggedInAs { get; set; } = "Logged in as";
         public string Main_TrayShowHide { get; set; } = "Show/Hide";
         public string Main_TrayAbout { get; set; } = "About";
         public string Main_TrayHelp { get; set; } = "Help";
@@ -128,13 +124,8 @@ namespace Modboy
         public string Prompt_InvalidFile { get; set; } = "Selected file path is invalid";
         public string Prompt_InvalidDir { get; set; } = "Selected directory path is invalid";
 
-        public string Settings_Authorization { get; set; } = "Authorization";
         public string Settings_General { get; set; } = "General";
         public string Settings_Aliases { get; set; } = "Aliases";
-        public string Settings_Username { get; set; } = "Username";
-        public string Settings_Password { get; set; } = "Password";
-        public string Settings_LogIn { get; set; } = "Log In";
-        public string Settings_LogOut { get; set; } = "Log Out";
         public string Settings_Language { get; set; } = "Language";
         public string Settings_ComputerName { get; set; } = "Computer Name";
         public string Settings_TempDownloadPath { get; set; } = "Temporary Download Path";
@@ -148,8 +139,6 @@ namespace Modboy
         public string Settings_Save { get; set; } = "Save";
         public string Settings_Reset { get; set; } = "Reset";
         public string Settings_Cancel { get; set; } = "Cancel";
-        public string Settings_NeedSaveSettingsPrompt { get; set; } = "This action will save your settings. Continue?";
-        public string Settings_AuthFailed { get; set; } = "Failed to log in! Please check your credentials";
 
         public string Updater_Title { get; set; } = "Modboy - Updater";
         public string Updater_Status { get; set; } = "Updating...";

@@ -162,7 +162,6 @@
     <Compile Include="Services\AliasService.cs" />
     <Compile Include="Services\APIService.cs" />
     <Compile Include="Services\ArchivingService.cs" />
-    <Compile Include="Services\AuthService.cs" />
     <Compile Include="Services\BackupService.cs" />
     <Compile Include="Services\CommandExecutionService.cs" />
     <Compile Include="Services\DatabaseService.cs" />

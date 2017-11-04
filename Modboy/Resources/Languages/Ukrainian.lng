@@ -4,8 +4,6 @@
   "Global_Yes": "Так",
   "Global_No": "Ні",
 
-  "Auth_NotLoggedIn": "Щоб користуватися Modboy необхідно авторизуватися з аккаунтом GameBanana. Зайдіть у налаштування, щоб це зробити.",
-
   "Command_Copy_SelectSource": "Оберіть одне з джерел",
 
   "Task_Verify": "Перевірка...",
@@ -40,7 +38,6 @@
   "Main_Overview": "Моди",
   "Main_History": "Історія",
   "Main_Settings": "Налаштування",
-  "Main_LoggedInAs": "Користувач",
   "Main_TrayShowHide": "Показати/Сховати",
   "Main_TrayAbout": "Про програму",
   "Main_TrayHelp": "Допомога",
@@ -70,13 +67,8 @@
   "Prompt_InvalidFile": "Неправильний шлях до вибранного файлу",
   "Prompt_InvalidDir": "Неправильний шлях до вибранної папки",
 
-  "Settings_Authorization": "Авторизація",
   "Settings_General": "Загальне",
   "Settings_Aliases": "Псевдоніми",
-  "Settings_Username": "Ім'я користувача",
-  "Settings_Password": "Пароль",
-  "Settings_LogIn": "Авторизуватися",
-  "Settings_LogOut": "Вийти",
   "Settings_Language": "Мова",
   "Settings_ComputerName": "Назва Комьютера",
   "Settings_TempDownloadPath": "Де зберігати завантажені файли",
@@ -90,8 +82,6 @@
   "Settings_Save": "Зберігти",
   "Settings_Reset": "Скинути",
   "Settings_Cancel": "Відміна",
-  "Settings_NeedSaveSettingsPrompt": "Необхідно зберігти налаштування, шоб продовжити. Зберігти?",
-  "Settings_AuthFailed": "Авторизація не успішна",
   
   "Updater_Title": "Modboy - Оновлення",
   "Updater_Status": "Оновлення...",

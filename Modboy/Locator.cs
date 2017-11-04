@@ -32,7 +32,6 @@ namespace Modboy
             SimpleIoc.Default.Register<AliasService>();
             SimpleIoc.Default.Register<APIService>();
             SimpleIoc.Default.Register<ArchivingService>();
-            SimpleIoc.Default.Register<AuthService>();
             SimpleIoc.Default.Register<BackupService>();
             SimpleIoc.Default.Register<CommandExecutionService>();
             SimpleIoc.Default.Register<DatabaseService>();
@@ -69,7 +68,6 @@ namespace Modboy
             {
                 // Order matters
                 Resolve<UnhandledExceptionService>().Start();
-                Resolve<AuthService>().Start();
                 Resolve<UpdaterService>().Start();
                 Resolve<HistoryService>().Start();
                 Resolve<TaskFileBufferService>().Start();

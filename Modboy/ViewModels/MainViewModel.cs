@@ -33,7 +33,6 @@ namespace Modboy.ViewModels
         // Commands
         public RelayCommand<Window> WindowShownCommand { get; }
         public RelayCommand<CancelEventArgs> WindowClosingCommand { get; }
-        public RelayCommand OpenProfileCommand { get; }
         public RelayCommand ShowHideWindowCommand { get; }
         public RelayCommand ShowAboutCommand { get; }
         public RelayCommand ShowHelpCommand { get; }
@@ -54,7 +53,6 @@ namespace Modboy.ViewModels
                 windowService.MainWindowHide();
             });
 
-            OpenProfileCommand = new RelayCommand(OpenProfile);
             ShowHideWindowCommand = new RelayCommand(windowService.MainWindowToggleShowHide);
             ShowAboutCommand = new RelayCommand(async () => await windowService.ShowAboutWindowAsync());
             ShowHelpCommand = new RelayCommand(ShowHelp);
@@ -69,19 +67,6 @@ namespace Modboy.ViewModels
                 _taskbarIcon?.ShowBalloonTip("Modboy", Localization.Localize(args.Entry),
                     args.Entry.Success ? BalloonIcon.Info : BalloonIcon.Error);
             };
-        }
-
-        private void OpenProfile()
-        {
-            try
-            {
-                Process.Start(string.Format(Constants.URLProfilePage, Settings.UserID));
-            }
-            catch (Exception ex)
-            {
-                Logger.Record("Could not open profile");
-                Logger.Record(ex);
-            }
         }
 
         private void ShowHelp()
