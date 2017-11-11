@@ -76,7 +76,7 @@ namespace Modboy
 
                 // Get the valuable data
                 string taskType = input.SubstringUntil("/");
-                string modID = input.SubstringAfter("/");
+                string modId = input.SubstringAfter("/");
 
                 // Create directory if necessary
                 if (!Directory.Exists(FileSystem.StorageDirectory))
@@ -85,7 +85,7 @@ namespace Modboy
                 // Append to buffer
                 using (var fs = Ext.RetryOpenForWrite(FileSystem.TaskBufferFilePath, FileMode.Append))
                 using (var sw = new StreamWriter(fs))
-                    sw.WriteLine($"{taskType}{Constants.UniformSeparator}{modID}");
+                    sw.WriteLine($"{taskType}{Constants.UniformSeparator}{modId}");
             }
             // Launched separately - parse special commands
             else

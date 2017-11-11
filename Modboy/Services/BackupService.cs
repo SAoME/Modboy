@@ -39,11 +39,11 @@ namespace Modboy.Services
         /// <summary>
         /// Find backup entry for given file path and mod
         /// </summary>
-        private BackupEntry Find(string originalFilePath, string modID)
+        private BackupEntry Find(string originalFilePath, string modId)
         {
             return
                 _databaseService.DB.Find<BackupEntry>(
-                    e => e.OriginalFilePath == originalFilePath && e.ModID == modID);
+                    e => e.OriginalFilePath == originalFilePath && e.ModId == modId);
         }
 
         /// <summary>
@@ -59,9 +59,9 @@ namespace Modboy.Services
         /// <summary>
         /// Find all backups made by given mod installation
         /// </summary>
-        private IEnumerable<BackupEntry> FindAll(string modID)
+        private IEnumerable<BackupEntry> FindAll(string modId)
         {
-            return _databaseService.DB.Table<BackupEntry>().Where(e => e.ModID == modID).AsEnumerable();
+            return _databaseService.DB.Table<BackupEntry>().Where(e => e.ModId == modId).AsEnumerable();
         }
 
         /// <summary>
@@ -70,7 +70,7 @@ namespace Modboy.Services
         private void Store(BackupEntry entry)
         {
             // Check if already exists
-            if (Find(entry.OriginalFilePath, entry.ModID) != null) return;
+            if (Find(entry.OriginalFilePath, entry.ModId) != null) return;
             _databaseService.DB.Insert(entry);
         }
 
@@ -85,7 +85,7 @@ namespace Modboy.Services
         /// <summary>
         /// Adds file to backup storage
         /// </summary>
-        public void BackupFile(string filePath, string modID)
+        public void BackupFile(string filePath, string modId)
         {
             // Check settings
             if (!Settings.Stager.Current.UseBackup) return;
@@ -94,11 +94,11 @@ namespace Modboy.Services
             if (!File.Exists(filePath)) return;
 
             // Find entry or create new
-            var entry = Find(filePath, modID);
+            var entry = Find(filePath, modId);
             if (entry == null)
             {
                 long installOrder = GetNextFreeInstallOrder(filePath);
-                entry = new BackupEntry(filePath, installOrder, modID);
+                entry = new BackupEntry(filePath, installOrder, modId);
                 Store(entry);
             }
 
@@ -114,27 +114,27 @@ namespace Modboy.Services
         /// <summary>
         /// Add all files from directory to backup storage
         /// </summary>
-        public void BackupDirectory(string dirPath, string modID)
+        public void BackupDirectory(string dirPath, string modId)
         {
             // Directory must exist
             if (!Directory.Exists(dirPath)) return;
 
             // Enumerate all files
             foreach (string file in Directory.EnumerateFiles(dirPath, "*.*", SearchOption.AllDirectories))
-                BackupFile(file, modID);
+                BackupFile(file, modId);
         }
 
         /// <summary>
         /// Restores file from backup if necessary
         /// <returns>True if any change was commited</returns>
         /// </summary>
-        public bool RestoreFile(string filePath, string modID)
+        public bool RestoreFile(string filePath, string modId)
         {
             // Check settings
             if (!Settings.Stager.Current.UseBackup) return false;
 
             // Find backup for current mod
-            var current = Find(filePath, modID);
+            var current = Find(filePath, modId);
             if (current == null) return false;
 
             // Find next order
@@ -172,18 +172,18 @@ namespace Modboy.Services
         /// <summary>
         /// Restores all backups made by given mod
         /// </summary>
-        public void RestoreAll(string modID)
+        public void RestoreAll(string modId)
         {
-            foreach (var entry in FindAll(modID))
-                RestoreFile(entry.OriginalFilePath, modID);
+            foreach (var entry in FindAll(modId))
+                RestoreFile(entry.OriginalFilePath, modId);
         }
 
         /// <summary>
         /// Removes all backups by given mod
         /// </summary>
-        public void DropAll(string modID)
+        public void DropAll(string modId)
         {
-            foreach (var entry in FindAll(modID))
+            foreach (var entry in FindAll(modId))
             {
                 Remove(entry);
                 string backupFile = Path.Combine(FileSystem.BackupStorageDirectory, entry.BackupFileName);
@@ -191,7 +191,7 @@ namespace Modboy.Services
             }
 
             // Logging
-            Logger.Record($"Dropped all backups for mod #{modID}");
+            Logger.Record($"Dropped all backups for mod #{modId}");
         }
     }
 }

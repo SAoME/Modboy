@@ -18,28 +18,28 @@ namespace Modboy.Models.Database
         [PrimaryKey, AutoIncrement]
         public int RowID { get; set; }
 
-        public string ModID { get; set; }
+        public string ModId { get; set; }
         public string AffectedFilesStr { get; set; }
         public string[] FileChanges => AffectedFilesStr.SplitTrim(Constants.UniformSeparator);
         public DateTime InstallDate { get; set; }
 
-        public InstalledModEntry(string modID, string fileChangesStr, DateTime installDate)
+        public InstalledModEntry(string modId, string fileChangesStr, DateTime installDate)
         {
-            ModID = modID;
+            ModId = modId;
             AffectedFilesStr = fileChangesStr;
             InstallDate = installDate;
         }
 
-        public InstalledModEntry(string modID, IEnumerable<string> fileChanges, DateTime installDate)
+        public InstalledModEntry(string modId, IEnumerable<string> fileChanges, DateTime installDate)
         {
-            ModID = modID;
+            ModId = modId;
             AffectedFilesStr = fileChanges.JoinToString(Constants.UniformSeparator);
             InstallDate = installDate;
         }
 
-        public InstalledModEntry(string modID)
+        public InstalledModEntry(string modId)
         {
-            ModID = modID;
+            ModId = modId;
         }
 
         public InstalledModEntry() { }

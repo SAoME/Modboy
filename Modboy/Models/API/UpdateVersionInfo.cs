@@ -19,7 +19,7 @@ namespace Modboy.Models.API
         public Version Version => Version.Parse(VersionString);
 
         [JsonProperty("DownloadUrl")]
-        public string DownloadURL { get; set; }
+        public string DownloadUrl { get; set; }
 
         private UpdateVersionInfo() { }
 

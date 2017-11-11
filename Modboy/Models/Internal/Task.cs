@@ -18,12 +18,12 @@ namespace Modboy.Models.Internal
         /// <summary>
         /// ID of the task target
         /// </summary>
-        public string ModID { get; }
+        public string ModId { get; }
 
-        public Task(TaskType type, string modID)
+        public Task(TaskType type, string modId)
         {
             Type = type;
-            ModID = modID;
+            ModId = modId;
         }
     }
 }

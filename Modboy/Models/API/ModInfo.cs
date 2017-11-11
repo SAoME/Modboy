@@ -15,21 +15,21 @@ namespace Modboy.Models.API
 {
     public class ModInfo : ObservableObject
     {
-        private string _modID;
+        private string _modId;
         private GameInfo _gameInfo = new GameInfo();
         private AuthorInfo _authorInfo = new AuthorInfo();
         private string _description;
         private string _name;
         private DateTime _timeAdded;
-        private string _imageURL;
-        private string _downloadURL;
-        private string _pageURL;
+        private string _imageUrl;
+        private string _downloadUrl;
+        private string _pageUrl;
 
         [JsonProperty("ID")]
-        public string ModID
+        public string ModId
         {
-            get { return _modID; }
-            set { Set(ref _modID, value); }
+            get { return _modId; }
+            set { Set(ref _modId, value); }
         }
 
         [JsonProperty("Game")]
@@ -69,31 +69,31 @@ namespace Modboy.Models.API
         }
 
         [JsonProperty("ThumbnailUrl")]
-        public string ImageURL
+        public string ImageUrl
         {
-            get { return _imageURL; }
-            set { Set(ref _imageURL, value); }
+            get { return _imageUrl; }
+            set { Set(ref _imageUrl, value); }
         }
 
         [JsonProperty("DownloadUrl")]
-        public string DownloadURL
+        public string DownloadUrl
         {
-            get { return _downloadURL; }
-            set { Set(ref _downloadURL, value); }
+            get { return _downloadUrl; }
+            set { Set(ref _downloadUrl, value); }
         }
 
         [JsonProperty("ProfileUrl")]
-        public string PageURL
+        public string PageUrl
         {
-            get { return _pageURL; }
-            set { Set(ref _pageURL, value); }
+            get { return _pageUrl; }
+            set { Set(ref _pageUrl, value); }
         }
 
         public ModInfo() { }
 
-        public ModInfo(string modID)
+        public ModInfo(string modId)
         {
-            ModID = modID;
+            ModId = modId;
         }
 
         public override string ToString()

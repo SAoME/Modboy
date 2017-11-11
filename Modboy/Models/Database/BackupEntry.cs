@@ -21,24 +21,24 @@ namespace Modboy.Models.Database
         public string OriginalFileName { get; set; }
         public string BackupFileName { get; set; }
         public long InstallOrder { get; set; }
-        public string ModID { get; set; }
+        public string ModId { get; set; }
 
-        public BackupEntry(string originalFilePath, long installOrder, string modID)
+        public BackupEntry(string originalFilePath, long installOrder, string modId)
         {
             OriginalFilePath = originalFilePath;
             OriginalFileName = Path.GetFileName(OriginalFilePath);
-            BackupFileName = $"{originalFilePath.ToSHA1Hash()}_{modID}_.bak";
+            BackupFileName = $"{originalFilePath.ToSHA1Hash()}_{modId}_.bak";
             InstallOrder = installOrder;
-            ModID = modID;
+            ModId = modId;
         }
 
-        public BackupEntry(string originalFilePath, string backupFileName, long installOrder, string modID)
+        public BackupEntry(string originalFilePath, string backupFileName, long installOrder, string modId)
         {
             OriginalFilePath = originalFilePath;
             OriginalFileName = Path.GetFileName(originalFilePath);
             BackupFileName = backupFileName;
             InstallOrder = installOrder;
-            ModID = modID;
+            ModId = modId;
         }
 
         public BackupEntry() { }

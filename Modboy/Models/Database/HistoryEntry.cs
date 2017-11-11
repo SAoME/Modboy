@@ -20,16 +20,16 @@ namespace Modboy.Models.Database
         public DateTime Date { get; set; }
         public TaskType TaskType { get; set; }
         public bool Success { get; set; }
-        public string ModID { get; set; }
+        public string ModId { get; set; }
         public string ModName { get; set; }
 
-        public HistoryEntry(DateTime date, TaskType taskType, bool success, string modID, string modName)
+        public HistoryEntry(DateTime date, TaskType taskType, bool success, string modId, string modName)
         {
             Date = date;
             TaskType = taskType;
             Success = success;
-            ModID = modID;
-            ModName = modName ?? modID;
+            ModId = modId;
+            ModName = modName ?? modId;
         }
 
         public HistoryEntry() { }

@@ -87,7 +87,7 @@ namespace Modboy.Services
 
             // Select the string representations of queued tasks
             var bufferLines = queue
-                .Select(t => $"{t.Type}{Constants.UniformSeparator}{t.ModID}")
+                .Select(t => $"{t.Type}{Constants.UniformSeparator}{t.ModId}")
                 .ToArray();
 
             // Dump to file

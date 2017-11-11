@@ -86,16 +86,16 @@ namespace Modboy.Services
             // Abort all tasks
             _taskExecutionService.AbortAllTasks();
 
-            // Get download URL
-            string downloadURL = GetDownloadURL();
-            if (downloadURL.IsBlank())
+            // Get download url
+            string downloadUrl = GetDownloadUrl();
+            if (downloadUrl.IsBlank())
             {
                 _windowService.ShowErrorWindowAsync(Localization.Current.Updater_UpdateDownloadFailed).GetResult();
                 return;
             }
 
             // Download the file
-            var downloadedFile = _webService.Download(downloadURL, FileSystem.CreateTempFile("ModboyUpdate.exe"));
+            var downloadedFile = _webService.Download(downloadUrl, FileSystem.CreateTempFile("ModboyUpdate.exe"));
             if (downloadedFile == null || !downloadedFile.Exists)
             {
                 _windowService.ShowErrorWindowAsync(Localization.Current.Updater_UpdateDownloadFailed).GetResult();
@@ -137,14 +137,14 @@ namespace Modboy.Services
         }
 
         /// <summary>
-        /// Get download URL for latest version
+        /// Get download url for latest version
         /// </summary>
-        private string GetDownloadURL()
+        private string GetDownloadUrl()
         {
             try
             {
-                string downloadURL = _apiService.GetLatestAvailableVersionDownloadURL();
-                return downloadURL;
+                string downloadUrl = _apiService.GetLatestAvailableVersionDownloadUrl();
+                return downloadUrl;
             }
             catch (Exception ex)
             {

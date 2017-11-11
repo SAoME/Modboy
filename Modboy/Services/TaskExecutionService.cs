@@ -141,7 +141,7 @@ namespace Modboy.Services
                 IsAbortPending = false;
                 TaskStarted?.Invoke(this, new TaskEventArgs(Task));
                 ResetStatus();
-                Logger.Record($"Executing task {Task.Type} for {Task.ModID}");
+                Logger.Record($"Executing task {Task.Type} for {Task.ModId}");
 
                 // Execute task
                 bool result = ExecuteTask();
@@ -192,7 +192,7 @@ namespace Modboy.Services
 
             // Get files affected by install
             UpdateStatus(TaskExecutionStatus.VerifyGetAffectedFiles);
-            var affectedFiles = _persistenceService.GetAffectedFiles(Task.ModID);
+            var affectedFiles = _persistenceService.GetAffectedFiles(Task.ModId);
             if (!affectedFiles.AnySafe()) return ModInstallationState.NotInstalled;
 
             // Normalize affected files
@@ -202,7 +202,7 @@ namespace Modboy.Services
             
             // Get verification pairs
             UpdateStatus(TaskExecutionStatus.VerifyGetVerificationPairs);
-            var verificationPairs = _apiService.GetVerificationPairs(Task.ModID);
+            var verificationPairs = _apiService.GetVerificationPairs(Task.ModId);
 
             // Verify files
             UpdateStatus(TaskExecutionStatus.VerifyExecute);
@@ -243,7 +243,7 @@ namespace Modboy.Services
 
             // Get mod info
             UpdateStatus(TaskExecutionStatus.InstallGetModInfo);
-            var modInfo = _apiService.GetModInfo(Task.ModID);
+            var modInfo = _apiService.GetModInfo(Task.ModId);
             if (modInfo == null) return false;
 
             // Reset everything
@@ -251,7 +251,7 @@ namespace Modboy.Services
 
             // Download archive
             UpdateStatus(TaskExecutionStatus.InstallDownload);
-            var downloadedFile = _webService.Download(modInfo.DownloadURL, FileSystem.CreateTempFile($"Mod_{modInfo.ModID}"));
+            var downloadedFile = _webService.Download(modInfo.DownloadUrl, FileSystem.CreateTempFile($"Mod_{modInfo.ModId}"));
             if (downloadedFile == null)
                 return false;
             if (IsAbortPending)
@@ -262,7 +262,7 @@ namespace Modboy.Services
 
             // Unpack archive
             UpdateStatus(TaskExecutionStatus.InstallUnpack);
-            string unpackedDir = FileSystem.CreateTempDirectory($"Mod_{modInfo.ModID}");
+            string unpackedDir = FileSystem.CreateTempDirectory($"Mod_{modInfo.ModId}");
             _aliasService.Set(new InternalAlias(InternalAliasKeyword.ArchiveExtractedDirectory, unpackedDir));
             _archivingService.ExtractFiles(downloadedFile.FullName, unpackedDir);
             if (!Directory.Exists(unpackedDir))
@@ -275,8 +275,8 @@ namespace Modboy.Services
 
             // Get commands
             UpdateStatus(TaskExecutionStatus.InstallExecute);
-            var commands = _apiService.GetInstallationCommands(modInfo.ModID);
-            string commandContextID = modInfo.ModID; // can be improved later
+            var commands = _apiService.GetInstallationCommands(modInfo.ModId);
+            string commandContextID = modInfo.ModId; // can be improved later
 
             // Execute commands
             foreach (var command in commands)
@@ -315,7 +315,7 @@ namespace Modboy.Services
 
             // Get files, affected by install
             UpdateStatus(TaskExecutionStatus.UninstallGetAffectedFiles);
-            var affectedFiles = _persistenceService.GetAffectedFiles(Task.ModID);
+            var affectedFiles = _persistenceService.GetAffectedFiles(Task.ModId);
             if (!affectedFiles.AnySafe()) return true;
 
             // Delete files
@@ -336,11 +336,11 @@ namespace Modboy.Services
 
             // Restore backups
             UpdateStatus(TaskExecutionStatus.UninstallRestoreBackups);
-            _backupService.RestoreAll(Task.ModID);
+            _backupService.RestoreAll(Task.ModId);
 
             // Store results
             UpdateStatus(TaskExecutionStatus.UninstallStoreResults);
-            _persistenceService.RecordUninstall(Task.ModID);
+            _persistenceService.RecordUninstall(Task.ModId);
 
             return true;
         }
@@ -386,7 +386,7 @@ namespace Modboy.Services
             if (Task.Type == TaskType.Uninstall)
             {
                 // Check if installed
-                if (!_persistenceService.IsInstalled(Task.ModID))
+                if (!_persistenceService.IsInstalled(Task.ModId))
                     return true;
 
                 // Prompt user
@@ -470,16 +470,16 @@ namespace Modboy.Services
         /// <summary>
         /// Aborts task by mod id
         /// </summary>
-        public void AbortTask(string modID)
+        public void AbortTask(string modId)
         {
             lock (_taskQueue)
             {
                 // Current task
-                if (Task != null && Task.ModID == modID)
+                if (Task != null && Task.ModId == modId)
                     AbortCurrentTask();
 
                 // Tasks in queue
-                var enqueuedTasks = _taskQueue.Where(t => t.ModID == modID).ToArray();
+                var enqueuedTasks = _taskQueue.Where(t => t.ModId == modId).ToArray();
                 foreach (var task in enqueuedTasks)
                 {
                     _taskQueue.Remove(task);

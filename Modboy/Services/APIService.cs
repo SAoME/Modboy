@@ -20,7 +20,7 @@ namespace Modboy.Services
         private const string URLAPIGetInstallCommands =
             "http://api.gamebanana.com/Modboy/InstallMod?id={0}&os=windows";
         private const string URLAPIGetVerifyData = "http://api.gamebanana.com/Modboy/VerifyMod?id={0}&os=windows";
-        private const string URLAPIResolveModID = "http://api.gamebanana.com/Modboy/ModInfo?id={0}";
+        private const string URLAPIResolveModId = "http://api.gamebanana.com/Modboy/ModInfo?id={0}";
         private const string URLAPIGetLastAppVersion = "http://api.gamebanana.com/Modboy/Version";
         private const string URLAPIReportException = "http://api.gamebanana.com/Modboy/Exception";
         // ReSharper restore InconsistentNaming
@@ -41,13 +41,13 @@ namespace Modboy.Services
         /// <summary>
         /// API Endpoint to get the mod info by its ID
         /// </summary>
-        public ModInfo GetModInfo(string modID)
+        public ModInfo GetModInfo(string modId)
         {
-            string response = _webService.Get(string.Format(URLAPIResolveModID, modID));
+            string response = _webService.Get(string.Format(URLAPIResolveModId, modId));
             if (response == null) return null;
 
             var modInfo = JsonConvert.DeserializeObject<ModInfo>(response);
-            modInfo.ModID = modID;
+            modInfo.ModId = modId;
 
             return modInfo;
         }
@@ -55,9 +55,9 @@ namespace Modboy.Services
         /// <summary>
         /// API Endpoint to get verification hashes for a mod
         /// </summary>
-        public IReadOnlyList<VerificationPair> GetVerificationPairs(string modID)
+        public IReadOnlyList<VerificationPair> GetVerificationPairs(string modId)
         {
-            string response = _webService.Get(string.Format(URLAPIGetVerifyData, modID));
+            string response = _webService.Get(string.Format(URLAPIGetVerifyData, modId));
             if (response == null) return null;
 
             return JsonConvert.DeserializeObject<VerificationPair[]>(response);
@@ -66,9 +66,9 @@ namespace Modboy.Services
         /// <summary>
         /// API Endpoint to get installation commands for a mod
         /// </summary>
-        public IReadOnlyList<Command> GetInstallationCommands(string modID)
+        public IReadOnlyList<Command> GetInstallationCommands(string modId)
         {
-            string response = _webService.Get(string.Format(URLAPIGetInstallCommands, modID));
+            string response = _webService.Get(string.Format(URLAPIGetInstallCommands, modId));
             if (response == null) return null;
 
             return JsonConvert.DeserializeObject<Command[]>(response);
@@ -114,13 +114,13 @@ namespace Modboy.Services
         /// API Endpoint to get the latest available software version download link
         /// </summary>
         /// <returns></returns>
-        public string GetLatestAvailableVersionDownloadURL()
+        public string GetLatestAvailableVersionDownloadUrl()
         {
             string response = _webService.Get(URLAPIGetLastAppVersion);
             if (response == null) return null;
 
             var versionData = JsonConvert.DeserializeObject<UpdateVersionInfo>(response);
-            return versionData.DownloadURL;
+            return versionData.DownloadUrl;
         }
     }
 }

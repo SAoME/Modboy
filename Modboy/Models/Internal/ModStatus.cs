@@ -105,8 +105,8 @@ namespace Modboy.Models.Internal
             InstalledModEntry = installedModEntry;
         }
 
-        public ModStatus(string modID)
-            : this(new ModInfo(modID), new InstalledModEntry(modID))
+        public ModStatus(string modId)
+            : this(new ModInfo(modId), new InstalledModEntry(modId))
         { }
 
         public override string ToString()

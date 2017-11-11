@@ -32,56 +32,56 @@ namespace Modboy.Services
         /// <summary>
         /// Find a record for the given mod
         /// </summary>
-        public InstalledModEntry GetInstalledMod(string modID)
+        public InstalledModEntry GetInstalledMod(string modId)
         {
-            return _databaseService.DB.Find<InstalledModEntry>(e => e.ModID == modID);
+            return _databaseService.DB.Find<InstalledModEntry>(e => e.ModId == modId);
         }
 
         /// <summary>
         /// Record the fact of successful installation to the database
         /// </summary>
-        public void RecordInstall(string modID, string[] fileChanges, DateTime date)
+        public void RecordInstall(string modId, string[] fileChanges, DateTime date)
         {
-            _databaseService.DB.Insert(new InstalledModEntry(modID, fileChanges, date));
+            _databaseService.DB.Insert(new InstalledModEntry(modId, fileChanges, date));
 
-            Logger.Record($"Added installed mod entry to the database (#{modID})");
+            Logger.Record($"Added installed mod entry to the database (#{modId})");
         }
 
         /// <summary>
         /// Record the fact of successful installation to the database
         /// </summary>
-        public void RecordInstall(string modID, string[] fileChanges)
+        public void RecordInstall(string modId, string[] fileChanges)
         {
-            RecordInstall(modID, fileChanges, DateTime.Now);
+            RecordInstall(modId, fileChanges, DateTime.Now);
         }
 
         /// <summary>
         /// Record the fact of successful uninstallation to the database
         /// </summary>
-        public void RecordUninstall(string modID)
+        public void RecordUninstall(string modId)
         {
-            var entry = GetInstalledMod(modID);
+            var entry = GetInstalledMod(modId);
             if (entry != null)
                 _databaseService.DB.Delete(entry);
 
-            Logger.Record($"Removed installed mod entry from the database (#{modID})");
+            Logger.Record($"Removed installed mod entry from the database (#{modId})");
         }
 
         /// <summary>
         /// Get the files affected by given mod's installation
         /// </summary>
-        public string[] GetAffectedFiles(string modID)
+        public string[] GetAffectedFiles(string modId)
         {
-            var entry = GetInstalledMod(modID);
+            var entry = GetInstalledMod(modId);
             return entry?.FileChanges;
         }
 
         /// <summary>
         /// Checks if the given mod is installed
         /// </summary>
-        public bool IsInstalled(string modID)
+        public bool IsInstalled(string modId)
         {
-            return GetInstalledMod(modID) != null;
+            return GetInstalledMod(modId) != null;
         }
     }
 }
