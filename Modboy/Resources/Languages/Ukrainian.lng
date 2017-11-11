@@ -19,7 +19,6 @@
   "Task_Uninstall_DeleteFiles": "Видаляю файли...",
   "Task_Uninstall_RestoreBackups": "Відновлюю резервні копії...",
   "Task_StoreResults": "Записую...",
-  "Task_SubmitResults": "Відсилаю...",
   "Task_PromptUninstall": "Ви насправді бажаєте видалити цей мод?",
   "Task_PromptReinstall": "Ви насправді бажаєте перевстановити цей мод?",
   "Task_CommandExecutionFailed": "Помилка виконання команди. Задача не може бути виконана",

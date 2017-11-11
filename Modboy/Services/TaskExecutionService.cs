@@ -306,12 +306,6 @@ namespace Modboy.Services
             UpdateStatus(TaskExecutionStatus.InstallStoreResults);
             _persistenceService.RecordInstall(commandContextID, _fileChanges.ToArray());
 
-#if !DEBUG
-            // Submit results
-            UpdateStatus(TaskExecutionStatus.InstallSubmitResults);
-            _apiService.ReportSuccessfulExecution(Task.ModID, TaskType.Install);
-#endif
-
             return true;
         }
 
@@ -347,12 +341,6 @@ namespace Modboy.Services
             // Store results
             UpdateStatus(TaskExecutionStatus.UninstallStoreResults);
             _persistenceService.RecordUninstall(Task.ModID);
-
-#if !DEBUG
-            // Submit results
-            UpdateStatus(TaskExecutionStatus.UninstallSubmitResults);
-            _apiService.ReportSuccessfulExecution(Task.ModID, TaskType.Uninstall);
-#endif
 
             return true;
         }

@@ -11,7 +11,6 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Modboy.Models.API;
-using Modboy.Models.Internal;
 
 namespace Modboy.Services
 {
@@ -24,7 +23,6 @@ namespace Modboy.Services
         private const string URLAPIResolveModID = "http://api.gamebanana.com/Modboy/ModInfo?id={0}";
         private const string URLAPIGetLastAppVersion = "http://api.gamebanana.com/Modboy/Version";
         private const string URLAPIReportException = "http://api.gamebanana.com/Modboy/Exception";
-        private const string URLAPIReportSuccessfulTask = "http://api.gamebanana.com/Modboy/Sync";
         // ReSharper restore InconsistentNaming
 
         private readonly WebService _webService = new WebService();
@@ -74,27 +72,6 @@ namespace Modboy.Services
             if (response == null) return null;
 
             return JsonConvert.DeserializeObject<Command[]>(response);
-        }
-
-        /// <summary>
-        /// API Endpoint to report successful execution of a task
-        /// </summary>
-        public void ReportSuccessfulExecution(string modID, TaskType taskType)
-        {
-            // Serialize status data
-            string serializedData = JsonConvert.SerializeObject(new
-            {
-                Settings.Stager.Current.ComputerName,
-                UserID = 0.ToString(),
-                Action = taskType.ToString(),
-                ModID = modID
-            });
-
-            // To base64
-            string base64Data = serializedData.ToBytes().ToBase64();
-
-            // Send them to server
-            _webService.Post(URLAPIReportSuccessfulTask, new Dictionary<string, string> {{"data", base64Data}});
         }
 
         /// <summary>

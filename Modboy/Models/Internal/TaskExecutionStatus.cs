@@ -24,14 +24,12 @@ namespace Modboy.Models.Internal
         InstallUnpack,
         InstallExecute,
         InstallStoreResults,
-        InstallSubmitResults,
 
         Uninstall,
         UninstallGetModInfo,
         UninstallGetAffectedFiles,
         UninstallDeleteFiles,
         UninstallRestoreBackups,
-        UninstallStoreResults,
-        UninstallSubmitResults
+        UninstallStoreResults
     }
 }

@@ -76,7 +76,6 @@ namespace Modboy
         public string Task_Uninstall_DeleteFiles { get; set; } = "Deleting files...";
         public string Task_Uninstall_RestoreBackups { get; set; } = "Restoring backups...";
         public string Task_StoreResults { get; set; } = "Storing results...";
-        public string Task_SubmitResults { get; set; } = "Submitting results...";
         public string Task_PromptUninstall { get; set; } = "Are you sure you want to uninstall this mod?";
         public string Task_PromptReinstall { get; set; } = "Are you sure you want to reinstall this mod?";
         public string Task_CommandExecutionFailed { get; set; } = "Failed to execute crucial installation command. The task cannot continue";
@@ -231,8 +230,6 @@ namespace Modboy
                     return Task_Install_Execute;
                 case TaskExecutionStatus.InstallStoreResults:
                     return Task_StoreResults;
-                case TaskExecutionStatus.InstallSubmitResults:
-                    return Task_SubmitResults;
                 case TaskExecutionStatus.Uninstall:
                     return Task_Uninstall;
                 case TaskExecutionStatus.UninstallGetModInfo:
@@ -245,8 +242,6 @@ namespace Modboy
                     return Task_Uninstall_RestoreBackups;
                 case TaskExecutionStatus.UninstallStoreResults:
                     return Task_StoreResults;
-                case TaskExecutionStatus.UninstallSubmitResults:
-                    return Task_SubmitResults;
                 default:
                     return LocalizationStringNotFound;
             }
