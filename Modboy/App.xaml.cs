@@ -69,14 +69,18 @@ namespace Modboy
             // Launched via protocol handle - parse task
             if (launchedViaProtocolHandle)
             {
+                // find example at: https://dev.gamebanana.com/skins/150504?modboy
+                // ex: modboy://Skin,150504,363769
                 // Extract the input from the arguments
                 var regex = new Regex(Constants.ProtocolHandle + "(.+)",
                     RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
                 string input = regex.Match(args[0]).Groups[1].Value;
 
                 // Get the valuable data
-                string taskType = input.SubstringUntil("/");
-                string modId = input.SubstringAfter("/");
+                var parts = input.SplitTrim(",");
+                var subType = parts[0];
+                var subId = parts[1];
+                var fileId = parts[2];
 
                 // Create directory if necessary
                 if (!Directory.Exists(FileSystem.StorageDirectory))
@@ -85,7 +89,7 @@ namespace Modboy
                 // Append to buffer
                 using (var fs = Ext.RetryOpenForWrite(FileSystem.TaskBufferFilePath, FileMode.Append))
                 using (var sw = new StreamWriter(fs))
-                    sw.WriteLine($"{taskType}{Constants.UniformSeparator}{modId}");
+                    sw.WriteLine(string.Join(Constants.UniformSeparator, TaskType.Install.ToString(), subType, subId, fileId));
             }
             // Launched separately - parse special commands
             else

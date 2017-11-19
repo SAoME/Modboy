@@ -13,17 +13,44 @@ namespace Modboy.Models.Internal
         /// <summary>
         /// Type of this task
         /// </summary>
-        public TaskType Type { get; }
+        public TaskType TaskType { get; }
 
         /// <summary>
-        /// ID of the task target
+        /// Type of the submission
         /// </summary>
-        public string ModId { get; }
+        public SubmissionType SubmissionType { get; }
 
-        public Task(TaskType type, string modId)
+        /// <summary>
+        /// Id of the submission
+        /// </summary>
+        public string SubmissionId { get; }
+
+        /// <summary>
+        /// Id of the file in the submission
+        /// </summary>
+        public string FileId { get; }
+
+        public (SubmissionType submissionType, string submissionId, string fileId) Identifier => (submissionType: SubmissionType, submissionId: SubmissionId, fileId: FileId);
+
+        public bool Matches((SubmissionType subType, string subId, string fileId) tuple)
         {
-            Type = type;
-            ModId = modId;
+            return SubmissionType == tuple.subType && SubmissionId == tuple.subId && FileId == tuple.fileId;
+        }
+
+        public Task(TaskType type, SubmissionType subType,  string subId, string fileId)
+        {
+            TaskType = type;
+            SubmissionType = subType;
+            SubmissionId = subId;
+            FileId = fileId;
+        }
+
+        public Task(TaskType type, (SubmissionType subType, string subId, string fileId) tuple)
+        {
+            TaskType = type;
+            SubmissionType = tuple.subType;
+            SubmissionId = tuple.subId;
+            FileId = tuple.fileId;
         }
     }
 }

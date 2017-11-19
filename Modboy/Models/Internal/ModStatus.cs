@@ -105,8 +105,8 @@ namespace Modboy.Models.Internal
             InstalledModEntry = installedModEntry;
         }
 
-        public ModStatus(string modId)
-            : this(new ModInfo(modId), new InstalledModEntry(modId))
+        public ModStatus((SubmissionType, string, string) tuple)
+            : this(new ModInfo(tuple), new InstalledModEntry(tuple))
         { }
 
         public override string ToString()

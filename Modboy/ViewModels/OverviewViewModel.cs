@@ -21,6 +21,7 @@ using Modboy.Services;
 using NegativeLayer.Extensions;
 using NegativeLayer.WPFExtensions;
 using Task = Modboy.Models.Internal.Task;
+using OrigTask = System.Threading.Tasks.Task;
 
 namespace Modboy.ViewModels
 {
@@ -99,11 +100,11 @@ namespace Modboy.ViewModels
         public RelayCommand<ModStatus> ExpandCommand { get; }
         public RelayCommand<ModStatus> UnexpandCommand { get; }
         public RelayCommand ClearFilters { get; }
-        public RelayCommand<string> AbortCommand { get; }
-        public RelayCommand<string> OpenModPageCommand { get; }
-        public RelayCommand<string> VerifyCommand { get; }
-        public RelayCommand<string> ReinstallCommand { get; }
-        public RelayCommand<string> UninstallCommand { get; }
+        public RelayCommand<(SubmissionType, string, string)> AbortCommand { get; }
+        public RelayCommand<(SubmissionType, string, string)> OpenModPageCommand { get; }
+        public RelayCommand<(SubmissionType, string, string)> VerifyCommand { get; }
+        public RelayCommand<(SubmissionType, string, string)> ReinstallCommand { get; }
+        public RelayCommand<(SubmissionType, string, string)> UninstallCommand { get; }
 
         public OverviewViewModel(TaskExecutionService taskExecutionService, PersistenceService persistenceService, WindowService windowService)
         {
@@ -120,11 +121,11 @@ namespace Modboy.ViewModels
             UnexpandCommand = new RelayCommand<ModStatus>(Unexpand);
             ClearFilters = new RelayCommand(() => NameFilter = GameFilter = null,
                 () => NameFilter.IsNotBlank() || GameFilter.IsNotBlank());
-            AbortCommand = new RelayCommand<string>(Abort);
-            OpenModPageCommand = new RelayCommand<string>(OpenModPage);
-            VerifyCommand = new RelayCommand<string>(Verify);
-            ReinstallCommand = new RelayCommand<string>(Reinstall);
-            UninstallCommand = new RelayCommand<string>(Uninstall);
+            AbortCommand = new RelayCommand<(SubmissionType, string, string)>(Abort);
+            OpenModPageCommand = new RelayCommand<(SubmissionType, string, string)>(OpenModPage);
+            VerifyCommand = new RelayCommand<(SubmissionType, string, string)>(Verify);
+            ReinstallCommand = new RelayCommand<(SubmissionType, string, string)>(Reinstall);
+            UninstallCommand = new RelayCommand<(SubmissionType, string, string)>(Uninstall);
 
             // Events
             Localization.PropertyChanged += (sender, args) =>
@@ -137,7 +138,7 @@ namespace Modboy.ViewModels
             _taskExecutionService.TaskEnded += (sender, args) =>
             {
                 // If it was a verification task - notify of the result
-                if (args.Task.Type == TaskType.Verify)
+                if (args.Task.TaskType == TaskType.Verify)
                 {
                     if (args.Success)
                         _windowService.ShowNotificationWindowAsync(Localization.Overview_VerifySuccessfulNotification).GetResult();
@@ -145,18 +146,18 @@ namespace Modboy.ViewModels
                         _windowService.ShowErrorWindowAsync(Localization.Overview_VerifyUnsuccessfulNotification).GetResult();
                 }
 
-                RemoveModStatus(args.Task.ModId);
-                PopulateInstalledMod(args.Task.ModId);
+                RemoveModStatus(args.Task.Identifier);
+                PopulateInstalledMod(args.Task.Identifier);
             };
             _taskExecutionService.TaskAborted += (sender, args) =>
             {
-                RemoveModStatus(args.Task.ModId);
-                PopulateInstalledMod(args.Task.ModId);
+                RemoveModStatus(args.Task.Identifier);
+                PopulateInstalledMod(args.Task.Identifier);
             };
             _taskExecutionService.TaskRemovedFromQueue += (sender, args) =>
             {
-                RemoveModStatus(args.Task.ModId);
-                PopulateInstalledMod(args.Task.ModId);
+                RemoveModStatus(args.Task.Identifier);
+                PopulateInstalledMod(args.Task.Identifier);
             };
 
             // Initial population
@@ -258,22 +259,22 @@ namespace Modboy.ViewModels
                 Expand(modStatus);
         }
 
-        private void Abort(string modId)
+        private void Abort((SubmissionType, string, string) tuple)
         {
-            _taskExecutionService.AbortTask(modId);
+            _taskExecutionService.AbortTask(tuple);
 
             // Update status
             DispatcherHelper.UIDispatcher.InvokeSafe(() =>
             {
-                var modStatus = GetModStatus(modId);
+                var modStatus = GetModStatus(tuple);
                 if (modStatus != null)
                     modStatus.IsAborted = true;
             });
         }
 
-        private void OpenModPage(string modId)
+        private void OpenModPage((SubmissionType subType, string subId, string fileId) tuple)
         {
-            var modStatus = GetModStatus(modId);
+            var modStatus = GetModStatus(tuple);
             if (modStatus == null || modStatus.ModInfo.PageUrl.IsBlank()) return;
             try
             {
@@ -281,36 +282,36 @@ namespace Modboy.ViewModels
             }
             catch (Exception ex)
             {
-                Logger.Record($"Could not open mod page for {modId}");
+                Logger.Record($"Could not open mod page for {tuple.subType} {tuple.subId}, file: {tuple.fileId}");
                 Logger.Record(ex);
             }
         }
 
-        private void Verify(string modId)
+        private void Verify((SubmissionType, string, string) tuple)
         {
-            _taskExecutionService.EnqueueTask(new Task(TaskType.Verify, modId));
+            _taskExecutionService.EnqueueTask(new Task(TaskType.Verify, tuple));
         }
 
-        private void Reinstall(string modId)
+        private void Reinstall((SubmissionType, string, string) tuple)
         {
-            _taskExecutionService.EnqueueTask(new Task(TaskType.Install, modId));
+            _taskExecutionService.EnqueueTask(new Task(TaskType.Install, tuple));
         }
 
-        private void Uninstall(string modId)
+        private void Uninstall((SubmissionType, string, string) tuple)
         {
-            _taskExecutionService.EnqueueTask(new Task(TaskType.Uninstall, modId));
+            _taskExecutionService.EnqueueTask(new Task(TaskType.Uninstall, tuple));
         }
 
-        private async System.Threading.Tasks.Task PopulateModInfoAsync(string modId)
+        private async OrigTask PopulateModInfoAsync((SubmissionType, string, string) tuple)
         {
-            var populatedModInfo = await _taskFactory.StartNew(() => _apiService.GetModInfo(modId));
+            var populatedModInfo = await _taskFactory.StartNew(() => _apiService.GetModInfo(tuple));
             if (populatedModInfo == null) return;
 
             // Synchronize
             await DispatcherHelper.UIDispatcher.InvokeSafeAsync(() =>
             {
                 // Get existing mod status
-                var existing = GetModStatus(modId);
+                var existing = GetModStatus(tuple);
                 if (existing == null) return;
 
                 // Update mod info
@@ -321,16 +322,16 @@ namespace Modboy.ViewModels
             });
         }
 
-        private async System.Threading.Tasks.Task PopulateInstalledModEntryAsync(string modId)
+        private async OrigTask PopulateInstalledModEntryAsync((SubmissionType, string, string fileId) tuple)
         {
-            var populatedInstalledModEntry = await _taskFactory.StartNew(() => _persistenceService.GetInstalledMod(modId));
+            var populatedInstalledModEntry = await _taskFactory.StartNew(() => _persistenceService.GetInstalledMod(tuple.fileId));
             if (populatedInstalledModEntry == null) return;
 
             // Synchronize
             await DispatcherHelper.UIDispatcher.InvokeSafeAsync(() =>
             {
                 // Get existing mod status
-                var existing = GetModStatus(modId);
+                var existing = GetModStatus(tuple);
                 if (existing == null) return;
 
                 // Update mod info
@@ -338,39 +339,39 @@ namespace Modboy.ViewModels
             });
         }
 
-        private ModStatus AddModStatus(string modId)
+        private ModStatus AddModStatus((SubmissionType, string, string) tuple)
         {
             return DispatcherHelper.UIDispatcher.InvokeSafe(() =>
             {
                 // Create stub status
-                var modStatus = new ModStatus(modId);
+                var modStatus = new ModStatus(tuple);
 
                 // Add mod status
                 Mods.Insert(0, modStatus);
 
                 // Populate mod info from API in background
-                PopulateModInfoAsync(modId).Forget();
+                PopulateModInfoAsync(tuple).Forget();
 
                 // Populate installed mod entry in background
-                PopulateInstalledModEntryAsync(modId).Forget();
+                PopulateInstalledModEntryAsync(tuple).Forget();
 
                 return modStatus;
             });
         }
 
-        private ModStatus GetModStatus(string modId, bool createIfMissing = false)
+        private ModStatus GetModStatus((SubmissionType subType, string subId, string fileId) tuple, bool createIfMissing = false)
         {
-            var result = Mods.FirstOrDefault(ms => ms?.ModInfo?.ModId == modId);
+            var result = Mods.FirstOrDefault(ms => ms?.ModInfo?.FileId == tuple.fileId);
             if (createIfMissing && result == null)
-                result = AddModStatus(modId);
+                result = AddModStatus(tuple);
             return result;
         }
 
-        private void RemoveModStatus(string modId)
+        private void RemoveModStatus((SubmissionType, string, string) tuple)
         {
             DispatcherHelper.UIDispatcher.InvokeSafe(() =>
             {
-                Mods.Remove(GetModStatus(modId));
+                Mods.Remove(GetModStatus(tuple));
             });
         }
 
@@ -384,7 +385,8 @@ namespace Modboy.ViewModels
                 return;
 
             // HACK: possible race maybe
-            var modStatus = GetModStatus(_taskExecutionService.Task.ModId, true);
+            var task = _taskExecutionService.Task;
+            var modStatus = GetModStatus(task.Identifier, true);
             if (modStatus == null) return;
             modStatus.State = ModStatusState.Processing;
             modStatus.StatusText = Localization.Localize(_taskExecutionService.Status);
@@ -403,10 +405,10 @@ namespace Modboy.ViewModels
         {
             foreach (var task in _taskExecutionService.TaskQueue)
             {
-                var modStatus = GetModStatus(task.ModId, true);
+                var modStatus = GetModStatus(task.Identifier, true);
                 if (modStatus == null) return;
                 modStatus.State = ModStatusState.InQueue;
-                modStatus.StatusText = $"{Localization.Overview_InQueue} ({task.Type})";
+                modStatus.StatusText = $"{Localization.Overview_InQueue} ({task.TaskType})";
                 modStatus.IsStatusProgressIndeterminate = true;
                 modStatus.IsStatusVisible = true;
                 modStatus.IsAbortVisible = true;
@@ -418,11 +420,11 @@ namespace Modboy.ViewModels
         /// <summary>
         /// Populates mod status for a single installed mod
         /// </summary>
-        private void PopulateInstalledMod(string modId)
+        private void PopulateInstalledMod((SubmissionType, string, string fileId) tuple)
         {
-            var mod = _persistenceService.GetInstalledMod(modId);
+            var mod = _persistenceService.GetInstalledMod(tuple.fileId);
             if (mod == null) return;
-            var modStatus = GetModStatus(modId, true);
+            var modStatus = GetModStatus(tuple, true);
             if (modStatus == null) return;
             modStatus.State = ModStatusState.Idle;
             modStatus.IsStatusVisible = false;
@@ -438,7 +440,7 @@ namespace Modboy.ViewModels
         {
             foreach (var mod in _persistenceService.GetInstalledMods())
             {
-                var modStatus = GetModStatus(mod.ModId, true);
+                var modStatus = GetModStatus(mod.Identifier, true);
                 if (modStatus == null) return;
                 modStatus.State = ModStatusState.Idle;
                 modStatus.IsStatusVisible = false;

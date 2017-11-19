@@ -11,11 +11,28 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using Modboy.Models.API;
+using Modboy.Models.Internal;
 
 namespace Modboy.Services
 {
     public class APIService
     {
+        private const string EndpointGetModInfo =
+            "https://api.gamebanana.com/Core/Item/Data?" +
+                "itemtype={0}" + "&" +
+                "itemid={1}" + "&" +
+                "fields=" +
+                    "name," +
+                    "Category().name," +
+                    "Url().sGetDownloadUrl()," +
+                    "Game().name," + 
+                    "Url().sGetProfileUrl()," +
+                    "Url().sEmbeddablesUrl()," +
+                    "Owner().name," +
+                    "date" + "&" +
+                "return_object=1" + "&" +
+                "flags=JSON_UNESCAPED_SLASHES";
+
         private const string EndpointGetInstallationInstructions =
             "https://api.gamebanana.com/Core/Item/Data?" +
                 "itemtype=File" + "&" +
@@ -27,7 +44,6 @@ namespace Modboy.Services
                 "flags=JSON_UNESCAPED_SLASHES";
 
         // ReSharper disable InconsistentNaming
-        private const string URLAPIResolveModId = "http://api.gamebanana.com/Modboy/ModInfo?id={0}";
         private const string URLAPIGetLastAppVersion = "http://api.gamebanana.com/Modboy/Version";
         private const string URLAPIReportException = "http://api.gamebanana.com/Modboy/Exception";
         // ReSharper restore InconsistentNaming
@@ -48,13 +64,15 @@ namespace Modboy.Services
         /// <summary>
         /// API Endpoint to get the mod info by its ID
         /// </summary>
-        public ModInfo GetModInfo(string modId)
+        public ModInfo GetModInfo((SubmissionType subType, string subId, string fileId) tuple)
         {
-            string response = _webService.Get(string.Format(URLAPIResolveModId, modId));
+            string response = _webService.Get(string.Format(EndpointGetModInfo, tuple.subType, tuple.subId));
             if (response == null) return null;
 
             var modInfo = JsonConvert.DeserializeObject<ModInfo>(response);
-            modInfo.ModId = modId;
+            modInfo.SubmissionType = tuple.subType;
+            modInfo.SubmissionId = tuple.subId;
+            modInfo.FileId = tuple.fileId;
 
             return modInfo;
         }
@@ -62,9 +80,9 @@ namespace Modboy.Services
         /// <summary>
         /// API Endpoint to get file info, including installation commands for a mod
         /// </summary>
-        public FileInfo GetFileInfo(string modId)
+        public FileInfo GetFileInfo(string fileId)
         {
-            string response = _webService.Get(string.Format(EndpointGetInstallationInstructions, modId));
+            string response = _webService.Get(string.Format(EndpointGetInstallationInstructions, fileId));
             if (response == null) return null;
 
             return JsonConvert.DeserializeObject<FileInfo>(response);

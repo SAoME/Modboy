@@ -59,9 +59,20 @@ namespace Modboy.Services
             // Enqueue everything
             foreach (string bufferLine in bufferLines.Distinct())
             {
-                string taskType = bufferLine.SubstringUntil(Constants.UniformSeparator);
-                string taskTarget = bufferLine.SubstringAfter(Constants.UniformSeparator);
-                _taskExecutionService.EnqueueTask(new Task(taskType.ParseEnum<TaskType>(), taskTarget));
+                var parts = bufferLine.SplitTrim(Constants.UniformSeparator);
+                var taskType = parts[0];
+                var subType = parts[1];
+                var subId = parts[2];
+                var fileId = parts[3];
+                
+                _taskExecutionService.EnqueueTask(
+                    new Task(
+                        taskType.ParseEnum<TaskType>(),
+                        subType.ParseEnum<SubmissionType>(),
+                        subId,
+                        fileId
+                    )
+                );
             }
 
             // Clear file
@@ -87,7 +98,15 @@ namespace Modboy.Services
 
             // Select the string representations of queued tasks
             var bufferLines = queue
-                .Select(t => $"{t.Type}{Constants.UniformSeparator}{t.ModId}")
+                .Select(t =>
+                    string.Join(
+                        Constants.UniformSeparator,
+                        t.TaskType.ToString(),
+                        t.SubmissionType,
+                        t.SubmissionId,
+                        t.FileId
+                    )
+                )
                 .ToArray();
 
             // Dump to file

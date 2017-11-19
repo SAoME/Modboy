@@ -123,6 +123,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FileSystem.cs" />
     <Compile Include="Localization.cs" />
     <Compile Include="Locator.cs" />
@@ -154,6 +155,7 @@
     <Compile Include="Models\Internal\ModStatus.cs" />
     <Compile Include="Models\Internal\ModStatusState.cs" />
     <Compile Include="Models\Internal\AliasPromptType.cs" />
+    <Compile Include="Models\Internal\SubmissionType.cs" />
     <Compile Include="Models\Internal\OverviewSortingMethod.cs" />
     <Compile Include="Models\Internal\Task.cs" />
     <Compile Include="Models\Internal\TaskExecutionStatus.cs" />

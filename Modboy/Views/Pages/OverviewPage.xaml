@@ -155,11 +155,14 @@
                                                FontWeight="Bold"
                                                TextTrimming="CharacterEllipsis"
                                                TextWrapping="NoWrap"
-                                               ToolTip="{Binding ModInfo.ModId}">
+                                               ToolTip="{Binding ModInfo.FileId}">
                                         <TextBlock.Text>
                                             <PriorityBinding>
                                                 <Binding Path="ModInfo.Name" />
-                                                <Binding Path="ModInfo.ModId" StringFormat="Mod ID: {0}" />
+                                                <Binding Path="ModInfo.SubmissionType" />
+                                                <!-- TODO: localize these-->
+                                                <Binding Path="ModInfo.SubmissionId" StringFormat="Submission Id: {0}" />
+                                                <Binding Path="ModInfo.FileId" StringFormat="File Id: {0}" />
                                             </PriorityBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
@@ -178,45 +181,80 @@
                                 </Grid>
 
                                 <!--  OVERLAY  -->
-                                <Grid Grid.Row="1"
-                                      HorizontalAlignment="Stretch"
-                                      VerticalAlignment="Stretch"
-                                      Background="{Binding Background,
-                                                           RelativeSource={RelativeSource FindAncestor,
-                                                                                          AncestorType={x:Type materialDesign:Card}}}"
-                                      Style="{StaticResource AnimatedVisibility}"
-                                      Visibility="{Binding IsExpanded,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}">
+                                <Grid
+                                    Grid.Row="1"
+                                    HorizontalAlignment="Stretch"
+                                    VerticalAlignment="Stretch"
+                                    Background="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}}"
+                                    Style="{StaticResource AnimatedVisibility}"
+                                    Visibility="{Binding IsExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
                                     <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
-                                    <DockPanel Grid.Row="0"
-                                               HorizontalAlignment="Stretch"
-                                               VerticalAlignment="Top">
-                                        <TextBlock Margin="10,0,0,0"
-                                                   HorizontalAlignment="Left"
-                                                   DockPanel.Dock="Left"
-                                                   Text="ID: " />
-                                        <TextBlock HorizontalAlignment="Left"
-                                                   DockPanel.Dock="Left"
-                                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                                   Text="{Binding ModInfo.ModId}" />
-                                        <TextBlock Margin="0,0,10,0"
-                                                   HorizontalAlignment="Right"
-                                                   DockPanel.Dock="Right"
-                                                   Foreground="{DynamicResource PrimaryTextBrush}"
-                                                   Text="{Binding InstalledModEntry.InstallDate,
-                                                                  StringFormat=\{0:g\}}" />
-                                        <TextBlock HorizontalAlignment="Right"
-                                                   DockPanel.Dock="Right"
-                                                   Text="{Binding OverviewViewModel.Localization.Overview_InstallDate,
-                                                                  Source={StaticResource Locator},
-                                                                  StringFormat='\{0\}: '}" />
+                                    <DockPanel
+                                        Grid.Row="0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top">
+                                        <!-- TODO: localize this-->
+                                        <TextBlock
+                                            Margin="10,0,0,0"
+                                            HorizontalAlignment="Left"
+                                            DockPanel.Dock="Left"
+                                            Text="Type: " />
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            DockPanel.Dock="Left"
+                                            Foreground="{DynamicResource PrimaryTextBrush}"
+                                            Text="{Binding ModInfo.SubmissionType}" />
+                                        <TextBlock
+                                            Margin="0,0,10,0"
+                                            HorizontalAlignment="Right"
+                                            DockPanel.Dock="Right"
+                                            Foreground="{DynamicResource PrimaryTextBrush}"
+                                            Text="{Binding
+                                                    InstalledModEntry.InstallDate,
+                                                    StringFormat=\{0:g\}}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            DockPanel.Dock="Right"
+                                            Text="{Binding
+                                                    OverviewViewModel.Localization.Overview_InstallDate,
+                                                    Source={StaticResource Locator},
+                                                    StringFormat='\{0\}: '}" />
                                     </DockPanel>
 
-                                    <TextBlock Grid.Row="1"
+                                    <DockPanel
+                                        Grid.Row="1"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top">
+                                        <!-- TODO: localize this-->
+                                        <TextBlock
+                                            Margin="10,0,0,0"
+                                            HorizontalAlignment="Left"
+                                            DockPanel.Dock="Left"
+                                            Text="Submission Id: " />
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            DockPanel.Dock="Left"
+                                            Foreground="{DynamicResource PrimaryTextBrush}"
+                                            Text="{Binding ModInfo.SubmissionId}" />
+                                        <TextBlock
+                                            Margin="0,0,10,0"
+                                            HorizontalAlignment="Right"
+                                            DockPanel.Dock="Right"
+                                            Foreground="{DynamicResource PrimaryTextBrush}"
+                                            Text="{Binding ModInfo.FileId}" />
+                                        <!-- TODO: localize this-->
+                                        <TextBlock
+                                            HorizontalAlignment="Right"
+                                            DockPanel.Dock="Right"
+                                            Text="File Id: " />
+                                    </DockPanel>
+
+                                    <TextBlock Grid.Row="2"
                                                Margin="5"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
@@ -273,7 +311,7 @@
                                         <Button Margin="1,0,1,0"
                                                 Command="{Binding OverviewViewModel.AbortCommand,
                                                                   Source={StaticResource Locator}}"
-                                                CommandParameter="{Binding ModInfo.ModId}"
+                                                CommandParameter="{Binding ModInfo.Identifier}"
                                                 IsEnabled="{Binding IsAborted,
                                                                     Converter={StaticResource InvertBoolConverter}}"
                                                 ToolTip="{Binding OverviewViewModel.Localization.Overview_Abort,
@@ -288,7 +326,7 @@
                                         <Button Margin="1,0,1,0"
                                                 Command="{Binding OverviewViewModel.VerifyCommand,
                                                                   Source={StaticResource Locator}}"
-                                                CommandParameter="{Binding ModInfo.ModId}"
+                                                CommandParameter="{Binding ModInfo.Identifier}"
                                                 ToolTip="{Binding OverviewViewModel.Localization.Overview_Verify,
                                                                   Source={StaticResource Locator}}"
                                                 Visibility="{Binding IsReinstallVisible,
@@ -301,7 +339,7 @@
                                         <Button Margin="1,0,1,0"
                                                 Command="{Binding OverviewViewModel.ReinstallCommand,
                                                                   Source={StaticResource Locator}}"
-                                                CommandParameter="{Binding ModInfo.ModId}"
+                                                CommandParameter="{Binding ModInfo.Identifier}"
                                                 ToolTip="{Binding OverviewViewModel.Localization.Overview_Reinstall,
                                                                   Source={StaticResource Locator}}"
                                                 Visibility="{Binding IsReinstallVisible,
@@ -314,7 +352,7 @@
                                         <Button Margin="1,0,1,0"
                                                 Command="{Binding OverviewViewModel.UninstallCommand,
                                                                   Source={StaticResource Locator}}"
-                                                CommandParameter="{Binding ModInfo.ModId}"
+                                                CommandParameter="{Binding ModInfo.Identifier}"
                                                 ToolTip="{Binding OverviewViewModel.Localization.Overview_Uninstall,
                                                                   Source={StaticResource Locator}}"
                                                 Visibility="{Binding IsUninstallVisible,
@@ -327,7 +365,7 @@
                                         <Button Margin="1,0,1,0"
                                                 Command="{Binding OverviewViewModel.OpenModPageCommand,
                                                                   Source={StaticResource Locator}}"
-                                                CommandParameter="{Binding ModInfo.ModId}"
+                                                CommandParameter="{Binding ModInfo.Identifier}"
                                                 ToolTip="{Binding OverviewViewModel.Localization.Overview_OpenModPage,
                                                                   Source={StaticResource Locator}}">
                                             <materialDesign:PackIcon Width="24"

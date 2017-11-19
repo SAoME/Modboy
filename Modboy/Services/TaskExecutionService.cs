@@ -141,7 +141,7 @@ namespace Modboy.Services
                 IsAbortPending = false;
                 TaskStarted?.Invoke(this, new TaskEventArgs(Task));
                 ResetStatus();
-                Logger.Record($"Executing task {Task.Type} for {Task.ModId}");
+                Logger.Record($"Executing task {Task.TaskType} for {Task.SubmissionType} {Task.SubmissionId}, file: {Task.FileId}");
 
                 // Execute task
                 bool result = ExecuteTask();
@@ -192,7 +192,7 @@ namespace Modboy.Services
 
             // Get files affected by install
             UpdateStatus(TaskExecutionStatus.VerifyGetAffectedFiles);
-            var affectedFiles = _persistenceService.GetAffectedFiles(Task.ModId);
+            var affectedFiles = _persistenceService.GetAffectedFiles(Task.FileId);
             if (!affectedFiles.AnySafe()) return ModInstallationState.NotInstalled;
 
             // Normalize affected files
@@ -230,15 +230,18 @@ namespace Modboy.Services
 
             // Get mod info
             UpdateStatus(TaskExecutionStatus.InstallGetModInfo);
-            var modInfo = _apiService.GetModInfo(Task.ModId);
+            var modInfo = _apiService.GetModInfo(Task.Identifier);
             if (modInfo == null) return false;
 
             // Reset everything
             _fileChanges.Clear();
 
+            // Retrieve file info
+            var fileInfo = _apiService.GetFileInfo(modInfo.FileId);
+
             // Download archive
             UpdateStatus(TaskExecutionStatus.InstallDownload);
-            var downloadedFile = _webService.Download(modInfo.DownloadUrl, FileSystem.CreateTempFile($"Mod_{modInfo.ModId}"));
+            var downloadedFile = _webService.Download(fileInfo.DownloadUrl, FileSystem.CreateTempFile($"Mod_{modInfo.FileId}"));
             if (downloadedFile == null)
                 return false;
             if (IsAbortPending)
@@ -249,7 +252,7 @@ namespace Modboy.Services
 
             // Unpack archive
             UpdateStatus(TaskExecutionStatus.InstallUnpack);
-            string unpackedDir = FileSystem.CreateTempDirectory($"Mod_{modInfo.ModId}");
+            string unpackedDir = FileSystem.CreateTempDirectory($"Mod_{modInfo.FileId}");
             _aliasService.Set(new InternalAlias(InternalAliasKeyword.ArchiveExtractedDirectory, unpackedDir));
             _archivingService.ExtractFiles(downloadedFile.FullName, unpackedDir);
             if (!Directory.Exists(unpackedDir))
@@ -262,9 +265,8 @@ namespace Modboy.Services
 
             // Get commands
             UpdateStatus(TaskExecutionStatus.InstallExecute);
-            var fileInfo = _apiService.GetFileInfo(modInfo.ModId);
             var commands = fileInfo.InstallationCommands;
-            string commandContextID = modInfo.ModId; // can be improved later
+            string commandContextID = modInfo.FileId; // can be improved later
 
             // Execute commands
             foreach (var command in commands)
@@ -292,7 +294,7 @@ namespace Modboy.Services
 
             // Store results
             UpdateStatus(TaskExecutionStatus.InstallStoreResults);
-            _persistenceService.RecordInstall(commandContextID, _fileChanges.ToArray());
+            _persistenceService.RecordInstall(modInfo.Identifier, _fileChanges.ToArray());
 
             return true;
         }
@@ -303,7 +305,7 @@ namespace Modboy.Services
 
             // Get files, affected by install
             UpdateStatus(TaskExecutionStatus.UninstallGetAffectedFiles);
-            var affectedFiles = _persistenceService.GetAffectedFiles(Task.ModId);
+            var affectedFiles = _persistenceService.GetAffectedFiles(Task.FileId);
             if (!affectedFiles.AnySafe()) return true;
 
             // Delete files
@@ -324,11 +326,11 @@ namespace Modboy.Services
 
             // Restore backups
             UpdateStatus(TaskExecutionStatus.UninstallRestoreBackups);
-            _backupService.RestoreAll(Task.ModId);
+            _backupService.RestoreAll(Task.FileId);
 
             // Store results
             UpdateStatus(TaskExecutionStatus.UninstallStoreResults);
-            _persistenceService.RecordUninstall(Task.ModId);
+            _persistenceService.RecordUninstall(Task.Identifier);
 
             return true;
         }
@@ -336,7 +338,7 @@ namespace Modboy.Services
         private bool ExecuteTask()
         {
             // Install
-            if (Task.Type == TaskType.Install)
+            if (Task.TaskType == TaskType.Install)
             {
                 // Verify
                 var integrity = ExecuteVerifyTask();
@@ -371,10 +373,10 @@ namespace Modboy.Services
             }
 
             // Uninstall
-            if (Task.Type == TaskType.Uninstall)
+            if (Task.TaskType == TaskType.Uninstall)
             {
                 // Check if installed
-                if (!_persistenceService.IsInstalled(Task.ModId))
+                if (!_persistenceService.IsInstalled(Task.FileId))
                     return true;
 
                 // Prompt user
@@ -386,7 +388,7 @@ namespace Modboy.Services
             }
 
             // Verify
-            if (Task.Type == TaskType.Verify)
+            if (Task.TaskType == TaskType.Verify)
             {
                 // Verify
                 var integrity = ExecuteVerifyTask();
@@ -458,16 +460,18 @@ namespace Modboy.Services
         /// <summary>
         /// Aborts task by mod id
         /// </summary>
-        public void AbortTask(string modId)
+        public void AbortTask((SubmissionType subType, string subId, string fileId) tuple)
         {
             lock (_taskQueue)
             {
                 // Current task
-                if (Task != null && Task.ModId == modId)
+                if (Task != null && Task.Matches(tuple))
+                {
                     AbortCurrentTask();
+                }
 
                 // Tasks in queue
-                var enqueuedTasks = _taskQueue.Where(t => t.ModId == modId).ToArray();
+                var enqueuedTasks = _taskQueue.Where(t => t.Matches(tuple)).ToArray();
                 foreach (var task in enqueuedTasks)
                 {
                     _taskQueue.Remove(task);

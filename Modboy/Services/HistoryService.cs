@@ -32,12 +32,12 @@ namespace Modboy.Services
 
         private void OnTaskEnded(object sender, TaskEndedEventArgs args)
         {
-            var modInfo = _apiService.GetModInfo(args.Task.ModId);
+            var modInfo = _apiService.GetModInfo(args.Task.Identifier);
             RecordEvent(new HistoryEntry(
                 DateTime.Now,
-                args.Task.Type,
+                args.Task.TaskType,
                 args.Success,
-                args.Task.ModId,
+                args.Task.FileId,
                 modInfo?.Name));
         }
 

@@ -172,10 +172,10 @@ namespace Modboy.Services
         /// <summary>
         /// Restores all backups made by given mod
         /// </summary>
-        public void RestoreAll(string modId)
+        public void RestoreAll(string fileId)
         {
-            foreach (var entry in FindAll(modId))
-                RestoreFile(entry.OriginalFilePath, modId);
+            foreach (var entry in FindAll(fileId))
+                RestoreFile(entry.OriginalFilePath, fileId);
         }
 
         /// <summary>
