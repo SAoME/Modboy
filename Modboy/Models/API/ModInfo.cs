@@ -16,8 +16,8 @@ namespace Modboy.Models.API
     public class ModInfo : ObservableObject
     {
         private string _modId;
-        private AuthorInfo _authorInfo = new AuthorInfo();
         private string _gameName;
+        private string _ownerName;
         private string _description;
         private string _name;
         private DateTime _timeAdded;
@@ -39,11 +39,11 @@ namespace Modboy.Models.API
             set { Set(ref _gameName, value); }
         }
 
-        [JsonProperty("Submitter")]
-        public AuthorInfo AuthorInfo
+        [JsonProperty("Owner().name")]
+        public string OwnerName
         {
-            get { return _authorInfo; }
-            set { Set(ref _authorInfo, value); }
+            get { return _ownerName; }
+            set { Set(ref _ownerName, value); }
         }
 
         [JsonProperty("Description")]

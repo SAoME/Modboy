@@ -127,7 +127,6 @@
     <Compile Include="Localization.cs" />
     <Compile Include="Locator.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Models\API\AuthorInfo.cs" />
     <Compile Include="Models\API\AuthorizationInfo.cs" />
     <Compile Include="Models\API\Command.cs" />
     <Compile Include="Models\API\CommandType.cs" />
