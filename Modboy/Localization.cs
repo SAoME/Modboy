@@ -64,7 +64,6 @@ namespace Modboy
         public string Command_Copy_SelectSource { get; set; } = "Select the copy source from one of the options";
 
         public string Task_Verify { get; set; } = "Verifying...";
-        public string Task_Verify_GetVerificationPairs { get; set; } = "Obtaining verification pairs...";
         public string Task_Verify_Execute { get; set; } = "Verifying files...";
         public string Task_Install { get; set; } = "Installing...";
         public string Task_Install_Download { get; set; } = "Downloading...";
@@ -214,8 +213,6 @@ namespace Modboy
                     return Task_GetModInfo;
                 case TaskExecutionStatus.VerifyGetAffectedFiles:
                     return Task_GetAffectedFiles;
-                case TaskExecutionStatus.VerifyGetVerificationPairs:
-                    return Task_Verify_GetVerificationPairs;
                 case TaskExecutionStatus.VerifyExecute:
                     return Task_Verify_Execute;
                 case TaskExecutionStatus.Install:

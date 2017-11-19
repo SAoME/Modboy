@@ -7,7 +7,6 @@
   "Command_Copy_SelectSource": "Оберіть одне з джерел",
 
   "Task_Verify": "Перевірка...",
-  "Task_Verify_GetVerificationPairs": "Отримую ключі порівняння...",
   "Task_Verify_Execute": "Перевіряю файли...",
   "Task_Install": "Встановлюю...",
   "Task_Install_Download": "Завантажую...",

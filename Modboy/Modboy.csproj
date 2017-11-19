@@ -133,7 +133,6 @@
     <Compile Include="Models\API\CommandType.cs" />
     <Compile Include="Models\API\GameInfo.cs" />
     <Compile Include="Models\API\ModInfo.cs" />
-    <Compile Include="Models\API\VerificationPair.cs" />
     <Compile Include="Models\API\UpdateVersionInfo.cs" />
     <Compile Include="Models\Converters\UnixDateTimeConverter.cs" />
     <Compile Include="Models\Database\BackupEntry.cs" />

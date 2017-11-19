@@ -19,7 +19,6 @@ namespace Modboy.Services
         // ReSharper disable InconsistentNaming
         private const string URLAPIGetInstallCommands =
             "http://api.gamebanana.com/Modboy/InstallMod?id={0}&os=windows";
-        private const string URLAPIGetVerifyData = "http://api.gamebanana.com/Modboy/VerifyMod?id={0}&os=windows";
         private const string URLAPIResolveModId = "http://api.gamebanana.com/Modboy/ModInfo?id={0}";
         private const string URLAPIGetLastAppVersion = "http://api.gamebanana.com/Modboy/Version";
         private const string URLAPIReportException = "http://api.gamebanana.com/Modboy/Exception";
@@ -50,17 +49,6 @@ namespace Modboy.Services
             modInfo.ModId = modId;
 
             return modInfo;
-        }
-
-        /// <summary>
-        /// API Endpoint to get verification hashes for a mod
-        /// </summary>
-        public IReadOnlyList<VerificationPair> GetVerificationPairs(string modId)
-        {
-            string response = _webService.Get(string.Format(URLAPIGetVerifyData, modId));
-            if (response == null) return null;
-
-            return JsonConvert.DeserializeObject<VerificationPair[]>(response);
         }
 
         /// <summary>

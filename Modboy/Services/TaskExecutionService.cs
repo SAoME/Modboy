@@ -197,16 +197,12 @@ namespace Modboy.Services
 
             // Normalize affected files
             if (affectedFiles.Length > 1)
-                affectedFiles = affectedFiles.StripCommonStart().ToArray();
+                affectedFiles = affectedFiles.ToArray();
             affectedFiles = affectedFiles.Select(f => f.Replace("\\", "/")).ToArray();
             
-            // Get verification pairs
-            UpdateStatus(TaskExecutionStatus.VerifyGetVerificationPairs);
-            var verificationPairs = _apiService.GetVerificationPairs(Task.ModId);
-
             // Verify files
             UpdateStatus(TaskExecutionStatus.VerifyExecute);
-            foreach (var verificationPair in verificationPairs)
+            foreach (var file in affectedFiles)
             {
                 if (IsAbortPending)
                 {
@@ -214,11 +210,6 @@ namespace Modboy.Services
                     return ModInstallationState.Unknown;
                 }
 
-                // Get file in question
-                string file = affectedFiles
-                    .Where(f => f.ContainsInvariant(verificationPair.File))
-                    .OrderBy(f => f.Length)
-                    .FirstOrDefault();
                 if (file.IsBlank())
                     return ModInstallationState.Corrupt;
 
@@ -226,11 +217,7 @@ namespace Modboy.Services
                 if (!File.Exists(file))
                     return ModInstallationState.Corrupt;
 
-                // Compare hashes
-                if (!Ext.CompareFileHash(file, verificationPair.Hash))
-                    return ModInstallationState.Corrupt;
-
-                UpdateStatus(Progress + 100.0/verificationPairs.Count);
+                UpdateStatus(Progress + 100.0/affectedFiles.Length);
             }
 
             // All checks passed => installed

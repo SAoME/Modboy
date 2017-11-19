@@ -15,7 +15,6 @@ namespace Modboy.Models.Internal
         Verify,
         VerifyGetModInfo,
         VerifyGetAffectedFiles,
-        VerifyGetVerificationPairs,
         VerifyExecute,
 
         Install,
