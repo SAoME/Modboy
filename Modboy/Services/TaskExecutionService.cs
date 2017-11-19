@@ -262,7 +262,8 @@ namespace Modboy.Services
 
             // Get commands
             UpdateStatus(TaskExecutionStatus.InstallExecute);
-            var commands = _apiService.GetInstallationCommands(modInfo.ModId);
+            var fileInfo = _apiService.GetFileInfo(modInfo.ModId);
+            var commands = fileInfo.InstallationCommands;
             string commandContextID = modInfo.ModId; // can be improved later
 
             // Execute commands

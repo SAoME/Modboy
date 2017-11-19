@@ -16,9 +16,17 @@ namespace Modboy.Services
 {
     public class APIService
     {
+        private const string EndpointGetInstallationInstructions =
+            "https://api.gamebanana.com/Core/Item/Data?" +
+                "itemtype=File" + "&" +
+                "itemid={0}" + "&" +
+                "fields=" +
+                    "sModManagerDownloadUrl()," +
+                    "Modboy().aInstallationScheme()" + "&" +
+                "return_object=1" + "&" +
+                "flags=JSON_UNESCAPED_SLASHES";
+
         // ReSharper disable InconsistentNaming
-        private const string URLAPIGetInstallCommands =
-            "http://api.gamebanana.com/Modboy/InstallMod?id={0}&os=windows";
         private const string URLAPIResolveModId = "http://api.gamebanana.com/Modboy/ModInfo?id={0}";
         private const string URLAPIGetLastAppVersion = "http://api.gamebanana.com/Modboy/Version";
         private const string URLAPIReportException = "http://api.gamebanana.com/Modboy/Exception";
@@ -52,14 +60,14 @@ namespace Modboy.Services
         }
 
         /// <summary>
-        /// API Endpoint to get installation commands for a mod
+        /// API Endpoint to get file info, including installation commands for a mod
         /// </summary>
-        public IReadOnlyList<Command> GetInstallationCommands(string modId)
+        public FileInfo GetFileInfo(string modId)
         {
-            string response = _webService.Get(string.Format(URLAPIGetInstallCommands, modId));
+            string response = _webService.Get(string.Format(EndpointGetInstallationInstructions, modId));
             if (response == null) return null;
 
-            return JsonConvert.DeserializeObject<Command[]>(response);
+            return JsonConvert.DeserializeObject<FileInfo>(response);
         }
 
         /// <summary>
