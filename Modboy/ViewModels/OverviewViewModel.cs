@@ -187,7 +187,7 @@ namespace Modboy.ViewModels
                     var status = (ModStatus) o;
                     if (NameFilter.IsNotBlank() && !status.ModInfo.Name.ContainsInvariant(NameFilter))
                         return false;
-                    if (GameFilter.IsNotBlank() && !status.ModInfo.GameInfo.Name.ContainsInvariant(GameFilter))
+                    if (GameFilter.IsNotBlank() && !status.ModInfo.GameName.ContainsInvariant(GameFilter))
                         return false;
                     return true;
                 };
@@ -229,7 +229,7 @@ namespace Modboy.ViewModels
             _collectionView.Refresh();
 
             // Update game list
-            var games = Mods.Select(m => m.ModInfo.GameInfo.Name).Distinct();
+            var games = Mods.Select(m => m.ModInfo.GameName).Distinct();
             AvailableGameFilters = new[] { string.Empty }.Union(games).ToArray();
         }
 

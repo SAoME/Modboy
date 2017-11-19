@@ -131,7 +131,6 @@
     <Compile Include="Models\API\AuthorizationInfo.cs" />
     <Compile Include="Models\API\Command.cs" />
     <Compile Include="Models\API\CommandType.cs" />
-    <Compile Include="Models\API\GameInfo.cs" />
     <Compile Include="Models\API\FileInfo.cs" />
     <Compile Include="Models\API\ModInfo.cs" />
     <Compile Include="Models\API\UpdateVersionInfo.cs" />

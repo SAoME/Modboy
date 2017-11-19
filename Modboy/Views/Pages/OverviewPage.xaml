@@ -252,7 +252,7 @@
                                                        HorizontalAlignment="Right"
                                                        DockPanel.Dock="Right"
                                                        Foreground="{DynamicResource PrimaryTextBrush}"
-                                                       Text="{Binding ModInfo.GameInfo.Name}"
+                                                       Text="{Binding ModInfo.GameName}"
                                                        TextTrimming="CharacterEllipsis"
                                                        TextWrapping="NoWrap" />
                                         </DockPanel>
