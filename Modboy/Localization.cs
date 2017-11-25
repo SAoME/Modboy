@@ -113,6 +113,10 @@ namespace Modboy
         public string Overview_VerifySuccessfulNotification { get; set; } = "Verification successful, mod installed correctly";
         public string Overview_VerifyUnsuccessfulNotification { get; set; } = "Verification unsuccessful, mod is either corrupt or not installed";
 
+        public string Overview_Type { get; set; } = "Type";
+        public string Overview_SubmissionId { get; set; } = "Submission Id";
+        public string Overview_FileId { get; set; } = "File Id";
+
         public string ModSortingMethod_Name { get; set; } = "Name";
         public string ModSortingMethod_AuthorName { get; set; } = "Author";
         public string ModSortingMethod_GameName { get; set; } = "Game";

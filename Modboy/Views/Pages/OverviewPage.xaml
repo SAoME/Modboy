@@ -160,9 +160,8 @@
                                             <PriorityBinding>
                                                 <Binding Path="ModInfo.Name" />
                                                 <Binding Path="ModInfo.SubmissionType" />
-                                                <!-- TODO: localize these-->
-                                                <Binding Path="ModInfo.SubmissionId" StringFormat="Submission Id: {0}" />
-                                                <Binding Path="ModInfo.FileId" StringFormat="File Id: {0}" />
+                                                <Binding Path="ModInfo.SubmissionId" />
+                                                <Binding Path="ModInfo.FileId" StringFormat=" - {0}" />
                                             </PriorityBinding>
                                         </TextBlock.Text>
                                     </TextBlock>
@@ -198,12 +197,14 @@
                                         Grid.Row="0"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Top">
-                                        <!-- TODO: localize this-->
                                         <TextBlock
                                             Margin="10,0,0,0"
                                             HorizontalAlignment="Left"
                                             DockPanel.Dock="Left"
-                                            Text="Type: " />
+                                            Text="{Binding
+                                                    OverviewViewModel.Localization.Overview_Type,
+                                                    Source={StaticResource Locator},
+                                                    StringFormat='\{0\}: '}" />
                                         <TextBlock
                                             HorizontalAlignment="Left"
                                             DockPanel.Dock="Left"
@@ -230,12 +231,14 @@
                                         Grid.Row="1"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Top">
-                                        <!-- TODO: localize this-->
                                         <TextBlock
                                             Margin="10,0,0,0"
                                             HorizontalAlignment="Left"
                                             DockPanel.Dock="Left"
-                                            Text="Submission Id: " />
+                                            Text="{Binding
+                                                    OverviewViewModel.Localization.Overview_SubmissionId,
+                                                    Source={StaticResource Locator},
+                                                    StringFormat='\{0\}: '}" />
                                         <TextBlock
                                             HorizontalAlignment="Left"
                                             DockPanel.Dock="Left"
@@ -247,11 +250,13 @@
                                             DockPanel.Dock="Right"
                                             Foreground="{DynamicResource PrimaryTextBrush}"
                                             Text="{Binding ModInfo.FileId}" />
-                                        <!-- TODO: localize this-->
                                         <TextBlock
                                             HorizontalAlignment="Right"
                                             DockPanel.Dock="Right"
-                                            Text="File Id: " />
+                                            Text="{Binding
+                                                    OverviewViewModel.Localization.Overview_FileId,
+                                                    Source={StaticResource Locator},
+                                                    StringFormat='\{0\}: '}" />
                                     </DockPanel>
 
                                     <TextBlock Grid.Row="2"
