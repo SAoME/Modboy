@@ -41,7 +41,7 @@ namespace Modboy.Services
         /// <summary>
         /// Extracts all contents of the given archive file to the destination directory
         /// </summary>
-        public void ExtractFiles(string archiveFilePath, string destinationDirectory)
+        public bool ExtractFiles(string archiveFilePath, string destinationDirectory)
         {
             Progress = 0;
 
@@ -49,31 +49,39 @@ namespace Modboy.Services
             if (!Directory.Exists(destinationDirectory))
                 Directory.CreateDirectory(destinationDirectory);
 
-            // Open reader for all entries
-            using (var archive = ArchiveFactory.Open(archiveFilePath))
-            {
-                // Closure
-                long archiveSize = new FileInfo(archiveFilePath).Length;
-
-                // Extract
-                foreach (var entry in archive.Entries)
+            try {
+                // Open reader for all entries
+                using (var archive = ArchiveFactory.Open(archiveFilePath))
                 {
-                    // Abort check
-                    if (AbortChecker()) return;
+                    // Closure
+                    long archiveSize = new FileInfo(archiveFilePath).Length;
 
-                    // Extract file
-                    try
+                    // Extract
+                    foreach (var entry in archive.Entries)
                     {
-                        var extractOptions = new ExtractionOptions {ExtractFullPath = true, Overwrite = true};
-                        entry.WriteToDirectory(destinationDirectory, extractOptions);
-                        Progress += 100.0 * entry.CompressedSize / archiveSize;
+                        // Abort check
+                        if (AbortChecker()) return false;
+
+                        // Extract file
+                        try
+                        {
+                            var extractOptions = new ExtractionOptions { ExtractFullPath = true, Overwrite = true };
+                            entry.WriteToDirectory(destinationDirectory, extractOptions);
+                            Progress += 100.0 * entry.CompressedSize / archiveSize;
+                        }
+                        catch (Exception ex)
+                        {
+                            Logger.Record($"Could not unpack an entry from an archive ({entry})");
+                            Logger.Record(ex);
+                        }
                     }
-                    catch (Exception ex)
-                    {
-                        Logger.Record($"Could not unpack an entry from an archive ({entry})");
-                        Logger.Record(ex);
-                    }
+                    return true;
                 }
+            }
+            // Archive is invalid
+            catch(InvalidOperationException ex)
+            {
+                return false;
             }
         }
     }

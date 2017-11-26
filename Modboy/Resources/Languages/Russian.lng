@@ -11,6 +11,7 @@
     "Task_Install": "Устанавливаю...",
     "Task_Install_Download": "Качаю...",
     "Task_Install_Unpack": "Распаковываю...",
+    "Task_Install_Unpack_Failed": "Распаковка не удалась, сообщите архив.",
     "Task_Install_Execute": "Устанавливаю...",
     "Task_Uninstall": "Удаляю...",
     "Task_GetModInfo": "Получаю инфу...",

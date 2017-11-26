@@ -254,9 +254,12 @@ namespace Modboy.Services
             UpdateStatus(TaskExecutionStatus.InstallUnpack);
             string unpackedDir = FileSystem.CreateTempDirectory($"Mod_{modInfo.FileId}");
             _aliasService.Set(new InternalAlias(InternalAliasKeyword.ArchiveExtractedDirectory, unpackedDir));
-            _archivingService.ExtractFiles(downloadedFile.FullName, unpackedDir);
-            if (!Directory.Exists(unpackedDir))
+            var extractSuccess = _archivingService.ExtractFiles(downloadedFile.FullName, unpackedDir);
+            if (!extractSuccess || !Directory.Exists(unpackedDir))
+            {
+                _windowService.ShowErrorWindowAsync(Localization.Current.Task_Install_Unpack_Failed).GetResult();
                 return false;
+            }
             if (IsAbortPending)
             {
                 TaskAborted?.Invoke(this, new TaskEventArgs(Task));
