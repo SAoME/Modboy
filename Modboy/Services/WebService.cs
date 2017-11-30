@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media.Imaging;
 using Modboy.Models.EventArgs;
+using Modboy.Models.Internal;
 
 namespace Modboy.Services
 {
@@ -73,10 +74,15 @@ namespace Modboy.Services
         /// <summary>
         /// Downloads a file to the destination, returning the destination FileInfo or null in case of fail
         /// </summary>
-        public FileInfo Download(string url, string destination)
+        public ExtendedFileInfo Download(string url, string destination)
         {
             var client = CreateClient();
-            return client.Download(url, destination, RetryPolicy);
+            var fileInfo = client.Download(url, destination, RetryPolicy);
+            if (fileInfo == null)
+            {
+                return null;
+            }
+            return new ExtendedFileInfo(fileInfo, client.ResponseHeaders);
         }
 
         /// <summary>

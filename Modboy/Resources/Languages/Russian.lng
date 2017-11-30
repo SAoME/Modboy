@@ -12,6 +12,7 @@
     "Task_Install_Download": "Качаю...",
     "Task_Install_Unpack": "Распаковываю...",
     "Task_Install_Unpack_Failed": "Распаковка не удалась, сообщите архив.",
+    "Task_Install_Unpack_Failed_RAR5": "Распаковка не удалась. Проверьте, находится ли архив в формате RAR5, который еще не поддерживается.",
     "Task_Install_Execute": "Устанавливаю...",
     "Task_Uninstall": "Удаляю...",
     "Task_GetModInfo": "Получаю инфу...",

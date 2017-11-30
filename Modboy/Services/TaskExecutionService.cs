@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Modboy.Models.EventArgs;
 using Modboy.Models.Internal;
 using Task = Modboy.Models.Internal.Task;
+using System.Net;
 
 namespace Modboy.Services
 {
@@ -241,9 +242,13 @@ namespace Modboy.Services
 
             // Download archive
             UpdateStatus(TaskExecutionStatus.InstallDownload);
-            var downloadedFile = _webService.Download(fileInfo.DownloadUrl, FileSystem.CreateTempFile($"Mod_{modInfo.FileId}"));
-            if (downloadedFile == null)
+            var downloadedFileContainer = _webService.Download(fileInfo.DownloadUrl, FileSystem.CreateTempFile($"Mod_{modInfo.FileId}"));
+            if (downloadedFileContainer == null)
+            {
                 return false;
+            }
+            var contentType = downloadedFileContainer.ResponseHeaders[HttpResponseHeader.ContentType];
+            var downloadedFile = downloadedFileContainer.FileInfo;
             if (IsAbortPending)
             {
                 TaskAborted?.Invoke(this, new TaskEventArgs(Task));
@@ -257,7 +262,14 @@ namespace Modboy.Services
             var extractSuccess = _archivingService.ExtractFiles(downloadedFile.FullName, unpackedDir);
             if (!extractSuccess || !Directory.Exists(unpackedDir))
             {
-                _windowService.ShowErrorWindowAsync(Localization.Current.Task_Install_Unpack_Failed).GetResult();
+                if ("application/x-rar-compressed".Equals(contentType))
+                {
+                    _windowService.ShowErrorWindowAsync(Localization.Current.Task_Install_Unpack_Failed_RAR5).GetResult();
+                }
+                else
+                {
+                    _windowService.ShowErrorWindowAsync(Localization.Current.Task_Install_Unpack_Failed).GetResult();
+                }
                 return false;
             }
             if (IsAbortPending)

@@ -95,15 +95,15 @@ namespace Modboy.Services
             }
 
             // Download the file
-            var downloadedFile = _webService.Download(downloadUrl, FileSystem.CreateTempFile("ModboyUpdate.exe"));
-            if (downloadedFile == null || !downloadedFile.Exists)
+            var downloadedFileContainer = _webService.Download(downloadUrl, FileSystem.CreateTempFile("ModboyUpdate.exe"));
+            if (downloadedFileContainer == null || !downloadedFileContainer.FileInfo.Exists)
             {
                 _windowService.ShowErrorWindowAsync(Localization.Current.Updater_UpdateDownloadFailed).GetResult();
                 return;
             }
 
             // Launch the installer
-            var process = Process.Start(downloadedFile.FullName, "/SP- /SILENT /SUPPRESSMSGBOXES /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS");
+            var process = Process.Start(downloadedFileContainer.FileInfo.FullName, "/SP- /SILENT /SUPPRESSMSGBOXES /CLOSEAPPLICATIONS /RESTARTAPPLICATIONS");
             if (process == null)
             {
                 _windowService.ShowErrorWindowAsync(Localization.Current.Updater_UpdateInstallFailed).GetResult();

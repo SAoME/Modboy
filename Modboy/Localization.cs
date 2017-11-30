@@ -69,6 +69,7 @@ namespace Modboy
         public string Task_Install_Download { get; set; } = "Downloading...";
         public string Task_Install_Unpack { get; set; } = "Unpacking...";
         public string Task_Install_Unpack_Failed { get; set; } = "Unpacking failed, please report archive.";
+        public string Task_Install_Unpack_Failed_RAR5 { get; set; } = "Unpacking failed. Please check if archive is in RAR5 format, which not yet supported.";
         public string Task_Install_Execute { get; set; } = "Executing installation...";
         public string Task_Uninstall { get; set; } = "Uninstalling...";
         public string Task_GetModInfo { get; set; } = "Obtaining mod information...";
