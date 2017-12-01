@@ -14,6 +14,9 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using Modboy.Services;
 using NegativeLayer.Extensions;
+using Newtonsoft.Json;
+using Modboy.Models.API;
+using System.Diagnostics;
 
 namespace Modboy.ViewModels
 {
@@ -109,12 +112,32 @@ namespace Modboy.ViewModels
             string logDump = IncludeLogs ? Logger.GetLogDump() : null;
             string databaseDump = IncludeDB ? _databaseService.GetDatabaseDump() : null;
 
+            // TODO: re-enable once external service established
             // Send
-            await _taskFactory.StartNew(
-                () => _apiService.ReportException(Message, systemInfo, Exception, logDump, databaseDump, MailBack));
+            //await _taskFactory.StartNew(() => _apiService.ReportException(Message, systemInfo, Exception, logDump, databaseDump, MailBack));
+
 
             // Report completion
-            await _windowService.ShowNotificationWindowAsync(Localization.BugReport_ReportSent);
+            //await _windowService.ShowNotificationWindowAsync(Localization.BugReport_ReportSent);
+
+            {
+                string serializedData = JsonConvert.SerializeObject(new BugReportInfo
+                {
+                    Message = Message,
+                    SystemInfo = systemInfo,
+                    Exception = Exception,
+                    Log = logDump,
+                    Database = databaseDump,
+                    MailBack = MailBack
+                });
+
+                Clipboard.SetText(serializedData);
+
+                await _windowService.ShowNotificationWindowAsync(Localization.BugReport_CopiedToClipboard);
+
+                Process.Start(Constants.URLSubmitBugReport);
+            }
+
             IsBusy = false;
 
             // Close window

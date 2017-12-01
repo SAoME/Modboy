@@ -165,6 +165,7 @@ namespace Modboy
             "You haven't specified your email address. Because of this, we will not be able to contact you, in case we need further information regarding your report. " +
             "Are you sure you want to send the report without contact email address?";
         public string BugReport_ReportSent { get; set; } = "Report has been sent. We will try to fix this as fast as we can. Sorry for the inconvinience.";
+        public string BugReport_CopiedToClipboard { get; set; } = "Information copied to the clipboard.";
 
         // ReSharper restore InconsistentNaming
         #endregion

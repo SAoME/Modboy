@@ -94,14 +94,11 @@ namespace Modboy.Services
         public void ReportException(string message, string systemInfo, Exception exception, string logDump, string databaseDump, string mailBack)
         {
             // Serialize
-            string serializedData = JsonConvert.SerializeObject(new
+            string serializedData = JsonConvert.SerializeObject(new BugReportInfo
             {
-                Version = App.CurrentVersion.ToString(),
-                ReportDateUTC = DateTime.UtcNow,
-                User = 0.ToString(),
                 Message = message,
                 SystemInfo = systemInfo,
-                Exception = exception ?? new Exception("User-initiated bug report"),
+                Exception = exception,
                 Log = logDump,
                 Database = databaseDump,
                 MailBack = mailBack
