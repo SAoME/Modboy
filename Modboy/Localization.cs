@@ -80,6 +80,7 @@ namespace Modboy
         public string Task_PromptUninstall { get; set; } = "Are you sure you want to uninstall this mod?";
         public string Task_PromptReinstall { get; set; } = "Are you sure you want to reinstall this mod?";
         public string Task_CommandExecutionFailed { get; set; } = "Failed to execute crucial installation command. The task cannot continue";
+        public string Task_UnknownInstallationProcess { get; set; } = "Modboy doesn't know how to install this submission type. :(";
 
         public string About_Title { get; set; } = "About Modboy";
         public string About_MoreInfo { get; set; } = "More info...";

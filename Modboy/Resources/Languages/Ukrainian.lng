@@ -23,6 +23,7 @@
     "Task_PromptUninstall": "Ви насправді бажаєте видалити цей мод?",
     "Task_PromptReinstall": "Ви насправді бажаєте перевстановити цей мод?",
     "Task_CommandExecutionFailed": "Помилка виконання команди. Задача не може бути виконана",
+    "Task_UnknownInstallationProcess": "Modboy не вміє встановлювати цей тип елемента. :(",
 
     "About_Title": "Про Modboy",
     "About_MoreInfo": "Більше інфи...",

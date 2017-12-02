@@ -17,6 +17,7 @@ namespace Modboy.Models.Internal
         Map,
         Script,
         Skin,
-        Sound
+        Sound,
+        Texture
     }
 }

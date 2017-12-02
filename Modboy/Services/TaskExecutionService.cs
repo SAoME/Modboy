@@ -16,6 +16,7 @@ using Modboy.Models.EventArgs;
 using Modboy.Models.Internal;
 using Task = Modboy.Models.Internal.Task;
 using System.Net;
+using Modboy.Models.API;
 
 namespace Modboy.Services
 {
@@ -282,6 +283,13 @@ namespace Modboy.Services
             UpdateStatus(TaskExecutionStatus.InstallExecute);
             var commands = fileInfo.InstallationCommands;
             string commandContextID = modInfo.FileId; // can be improved later
+
+            // If we aren't copying files, we probably don't have an installation scheme for this type of submission
+            if (!commands.Any(c => CommandType.Copy.Equals(c.Type)))
+            {
+                _windowService.ShowErrorWindowAsync(Localization.Current.Task_UnknownInstallationProcess).GetResult();
+                return false;
+            }
 
             // Execute commands
             foreach (var command in commands)
