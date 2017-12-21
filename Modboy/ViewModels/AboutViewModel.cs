@@ -33,6 +33,7 @@ namespace Modboy.ViewModels
                 Environment.NewLine +
                 "Tatu Eugen --- Romanian Translation" + Environment.NewLine +
                 "Ezequiel-TM --- Spanish Translation" + Environment.NewLine +
+                "Tyraclose --- Portuguese (PT-BR) Transalation";
 
             // Commands
             MoreInfoCommand = new RelayCommand(MoreInfo);
