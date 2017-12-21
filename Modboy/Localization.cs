@@ -19,6 +19,7 @@ namespace Modboy
     public class Localization : ObservableObject
     {
         public const string DefaultLanguage = "English";
+        private static bool LoadedDefaultOnce = false;
 
         /// <summary>
         /// Localization service that is currently in use
@@ -30,12 +31,12 @@ namespace Modboy
         /// </summary>
         public static IEnumerable<string> GetAvailableLanguages()
         {
-            // Default language
-            yield return DefaultLanguage;
-
             // Custom files
             if (!Directory.Exists(FileSystem.LanguagesStorageDirectory))
+            {
                 yield break;
+            }
+
             foreach (string languageFile in Directory.EnumerateFiles(FileSystem.LanguagesStorageDirectory, "*.lng"))
             {
                 string name = Path.GetFileNameWithoutExtension(languageFile);
@@ -56,117 +57,114 @@ namespace Modboy
         // ReSharper disable InconsistentNaming
         public string LocalizationStringNotFound { get; set; } = "[STR_NOT_FOUND]";
 
-        public string Global_OK { get; set; } = "OK";
-        public string Global_Cancel { get; set; } = "Cancel";
-        public string Global_Yes { get; set; } = "Yes";
-        public string Global_No { get; set; } = "No";
+        public string Global_OK { get; set; }
+        public string Global_Cancel { get; set; }
+        public string Global_Yes { get; set; }
+        public string Global_No { get; set; }
 
-        public string Command_Copy_SelectSource { get; set; } = "Select the copy source from one of the options";
+        public string Command_Copy_SelectSource { get; set; }
 
-        public string Task_Verify { get; set; } = "Verifying...";
-        public string Task_Verify_Execute { get; set; } = "Verifying files...";
-        public string Task_Install { get; set; } = "Installing...";
-        public string Task_Install_Download { get; set; } = "Downloading...";
-        public string Task_Install_Unpack { get; set; } = "Unpacking...";
-        public string Task_Install_Unpack_Failed { get; set; } = "Unpacking failed, please report archive.";
-        public string Task_Install_Unpack_Failed_RAR5 { get; set; } = "Unpacking failed. Please check if archive is in RAR5 format, which not yet supported.";
-        public string Task_Install_Execute { get; set; } = "Executing installation...";
-        public string Task_Uninstall { get; set; } = "Uninstalling...";
-        public string Task_GetModInfo { get; set; } = "Obtaining mod information...";
-        public string Task_GetAffectedFiles { get; set; } = "Gathering affected files...";
-        public string Task_Uninstall_DeleteFiles { get; set; } = "Deleting files...";
-        public string Task_Uninstall_RestoreBackups { get; set; } = "Restoring backups...";
-        public string Task_StoreResults { get; set; } = "Storing results...";
-        public string Task_PromptUninstall { get; set; } = "Are you sure you want to uninstall this mod?";
-        public string Task_PromptReinstall { get; set; } = "Are you sure you want to reinstall this mod?";
-        public string Task_CommandExecutionFailed { get; set; } = "Failed to execute crucial installation command. The task cannot continue";
-        public string Task_UnknownInstallationProcess { get; set; } = "Modboy doesn't know how to install this submission type. :(";
+        public string Task_Verify { get; set; }
+        public string Task_Verify_Execute { get; set; }
+        public string Task_Install { get; set; }
+        public string Task_Install_Download { get; set; }
+        public string Task_Install_Unpack { get; set; }
+        public string Task_Install_Unpack_Failed { get; set; }
+        public string Task_Install_Unpack_Failed_RAR5 { get; set; }
+        public string Task_Install_Execute { get; set; }
+        public string Task_Uninstall { get; set; }
+        public string Task_GetModInfo { get; set; }
+        public string Task_GetAffectedFiles { get; set; }
+        public string Task_Uninstall_DeleteFiles { get; set; }
+        public string Task_Uninstall_RestoreBackups { get; set; }
+        public string Task_StoreResults { get; set; }
+        public string Task_PromptUninstall { get; set; }
+        public string Task_PromptReinstall { get; set; }
+        public string Task_CommandExecutionFailed { get; set; }
+        public string Task_UnknownInstallationProcess { get; set; }
 
-        public string About_Title { get; set; } = "About Modboy";
-        public string About_MoreInfo { get; set; } = "More info...";
+        public string About_Title { get; set; }
+        public string About_MoreInfo { get; set; }
 
-        public string ComboSelect_Title { get; set; } = "Modboy - Select one of the options";
+        public string ComboSelect_Title { get; set; }
 
-        public string History_TaskCompletedSuccessfully { get; set; } = "Task [{0}] for mod [{1}] completed successfully";
-        public string History_TaskCompletedUnsuccessfully { get; set; } = "Task [{0}] for mod [{1}] failed";
-        public string History_Date { get; set; } = "Date";
-        public string History_Event { get; set; } = "Event";
-        public string History_Clear { get; set; } = "Clear History";
+        public string History_TaskCompletedSuccessfully { get; set; }
+        public string History_TaskCompletedUnsuccessfully { get; set; }
+        public string History_Date { get; set; }
+        public string History_Event { get; set; }
+        public string History_Clear { get; set; }
 
-        public string Main_Overview { get; set; } = "Mods";
-        public string Main_History { get; set; } = "History";
-        public string Main_Settings { get; set; } = "Settings";
-        public string Main_TrayShowHide { get; set; } = "Show/Hide";
-        public string Main_TrayAbout { get; set; } = "About";
-        public string Main_TrayHelp { get; set; } = "Help";
-        public string Main_TraySubmitBugReport { get; set; } = "Submit Bug Report";
-        public string Main_TrayExit { get; set; } = "Exit";
+        public string Main_Overview { get; set; }
+        public string Main_History { get; set; }
+        public string Main_Settings { get; set; }
+        public string Main_TrayShowHide { get; set; }
+        public string Main_TrayAbout { get; set; }
+        public string Main_TrayHelp { get; set; }
+        public string Main_TraySubmitBugReport { get; set; }
+        public string Main_TrayExit { get; set; }
 
-        public string Overview_NameFilter { get; set; } = "Name";
-        public string Overview_GameFilter { get; set; } = "Game";
-        public string Overview_Sorting { get; set; } = "Sorting";
-        public string Overview_InstallDate { get; set; } = "Installed on";
-        public string Overview_InQueue { get; set; } = "In queue";
-        public string Overview_Installed { get; set; } = "Installed";
-        public string Overview_OpenModPage { get; set; } = "Mod Profile";
-        public string Overview_Abort { get; set; } = "Abort";
-        public string Overview_Verify { get; set; } = "Verify";
-        public string Overview_Reinstall { get; set; } = "Update";
-        public string Overview_Uninstall { get; set; } = "Remove";
-        public string Overview_VerifySuccessfulNotification { get; set; } = "Verification successful, mod installed correctly";
-        public string Overview_VerifyUnsuccessfulNotification { get; set; } = "Verification unsuccessful, mod is either corrupt or not installed";
+        public string Overview_NameFilter { get; set; }
+        public string Overview_GameFilter { get; set; }
+        public string Overview_Sorting { get; set; }
+        public string Overview_InstallDate { get; set; }
+        public string Overview_InQueue { get; set; }
+        public string Overview_Installed { get; set; }
+        public string Overview_OpenModPage { get; set; }
+        public string Overview_Abort { get; set; }
+        public string Overview_Verify { get; set; }
+        public string Overview_Reinstall { get; set; }
+        public string Overview_Uninstall { get; set; }
+        public string Overview_VerifySuccessfulNotification { get; set; }
+        public string Overview_VerifyUnsuccessfulNotification { get; set; }
 
-        public string Overview_Type { get; set; } = "Type";
-        public string Overview_SubmissionId { get; set; } = "Submission Id";
-        public string Overview_FileId { get; set; } = "File Id";
+        public string Overview_Type { get; set; }
+        public string Overview_SubmissionId { get; set; }
+        public string Overview_FileId { get; set; }
 
-        public string ModSortingMethod_Name { get; set; } = "Name";
-        public string ModSortingMethod_AuthorName { get; set; } = "Author";
-        public string ModSortingMethod_GameName { get; set; } = "Game";
-        public string ModSortingMethod_InstallDate { get; set; } = "Install Date";
+        public string ModSortingMethod_Name { get; set; }
+        public string ModSortingMethod_AuthorName { get; set; }
+        public string ModSortingMethod_GameName { get; set; }
+        public string ModSortingMethod_InstallDate { get; set; }
 
-        public string Prompt_Title { get; set; } = "Modboy - Prompt";
-        public string Prompt_InvalidFile { get; set; } = "Selected file path is invalid";
-        public string Prompt_InvalidDir { get; set; } = "Selected directory path is invalid";
+        public string Prompt_Title { get; set; }
+        public string Prompt_InvalidFile { get; set; }
+        public string Prompt_InvalidDir { get; set; }
 
-        public string Settings_General { get; set; } = "General";
-        public string Settings_Aliases { get; set; } = "Aliases";
-        public string Settings_Language { get; set; } = "Language";
-        public string Settings_ComputerName { get; set; } = "Computer Name";
-        public string Settings_TempDownloadPath { get; set; } = "Temporary Download Path";
-        public string Settings_UseBackup { get; set; } = "Backup overwritten/deleted files";
-        public string Settings_BackupPath { get; set; } = "Backup Path";
-        public string Settings_ShowNotifications { get; set; } = "Show tray notifications";
-        public string Settings_AutoUpdate { get; set; } = "Automatically check for Modboy updates";
-        public string Settings_SendBugReports { get; set; } = "Send bug reports";
-        public string Settings_AliasKeyword { get; set; } = "Alias Keyword";
-        public string Settings_AliasValue { get; set; } = "Alias Value";
-        public string Settings_Save { get; set; } = "Save";
-        public string Settings_Reset { get; set; } = "Reset";
-        public string Settings_Cancel { get; set; } = "Cancel";
+        public string Settings_General { get; set; }
+        public string Settings_Aliases { get; set; }
+        public string Settings_Language { get; set; }
+        public string Settings_ComputerName { get; set; }
+        public string Settings_TempDownloadPath { get; set; }
+        public string Settings_UseBackup { get; set; }
+        public string Settings_BackupPath { get; set; }
+        public string Settings_ShowNotifications { get; set; }
+        public string Settings_AutoUpdate { get; set; }
+        public string Settings_SendBugReports { get; set; }
+        public string Settings_AliasKeyword { get; set; }
+        public string Settings_AliasValue { get; set; }
+        public string Settings_Save { get; set; }
+        public string Settings_Reset { get; set; }
+        public string Settings_Cancel { get; set; }
 
-        public string Updater_Title { get; set; } = "Modboy - Updater";
-        public string Updater_Status { get; set; } = "Updating...";
-        public string Updater_CheckFailed { get; set; } = "Could not check for updates!";
-        public string Updater_UpdateDownloadFailed { get; set; } = "Could not download updates!";
-        public string Updater_UpdateInstallFailed { get; set; } = "Could not install updates!";
-        public string Updater_UpdatePrompt { get; set; } = "New version of Modboy has been found. Do you want to update now?";
+        public string Updater_Title { get; set; }
+        public string Updater_Status { get; set; }
+        public string Updater_CheckFailed { get; set; }
+        public string Updater_UpdateDownloadFailed { get; set; }
+        public string Updater_UpdateInstallFailed { get; set; }
+        public string Updater_UpdatePrompt { get; set; }
 
-        public string BugReport_Title { get; set; } = "Modboy - Bug Reporter";
-        public string BugReport_Description { get; set; } =
-            "Sorry, Modboy has encountered an error from which it could not recover. If you were installing or uninstalling mods, they might become corrupt. Help us fix this error by sending us debug information.";
-        public string BugReport_Message { get; set; } = "Additional information";
-        public string BugReport_IncludeLogs { get; set; } = "Include anonymous log files";
-        public string BugReport_IncludeDB { get; set; } = "Include local mod database";
-        public string BugReport_MailBack { get; set; } = "Your email";
-        public string BugReport_SendReport { get; set; } = "Send";
-        public string BugReport_DiscardReport { get; set; } = "Don't Send";
-        public string BugReport_NoMessageSpecified { get; set; } = "Please specify a detailed message to describe the error you're receiving.";
-        public string BugReport_NoMailBackSpecified { get; set; } =
-            "You haven't specified your email address. Because of this, we will not be able to contact you, in case we need further information regarding your report. " +
-            "Are you sure you want to send the report without contact email address?";
-        public string BugReport_ReportSent { get; set; } = "Report has been sent. We will try to fix this as fast as we can. Sorry for the inconvinience.";
-        public string BugReport_CopiedToClipboard { get; set; } = "Information copied to the clipboard.";
+        public string BugReport_Title { get; set; }
+        public string BugReport_Description { get; set; }
+        public string BugReport_Message { get; set; }
+        public string BugReport_IncludeLogs { get; set; }
+        public string BugReport_IncludeDB { get; set; }
+        public string BugReport_MailBack { get; set; }
+        public string BugReport_SendReport { get; set; }
+        public string BugReport_DiscardReport { get; set; }
+        public string BugReport_NoMessageSpecified { get; set; }
+        public string BugReport_NoMailBackSpecified { get; set; }
+        public string BugReport_ReportSent { get; set; }
+        public string BugReport_CopiedToClipboard { get; set; }
 
         // ReSharper restore InconsistentNaming
         #endregion
@@ -184,29 +182,27 @@ namespace Modboy
         /// <summary>
         /// Loads the specified language file by language name
         /// </summary>
-        public void LoadLanguageFile(string language)
+        public bool LoadLanguageFile(string language)
         {
-            // Is default language
-            if (language == DefaultLanguage)
+            if (DefaultLanguage != language & !LoadedDefaultOnce)
             {
-                JsonConvert.PopulateObject(JsonConvert.SerializeObject(new Localization()), this);
+                LoadLanguageFile(DefaultLanguage);
+                LoadedDefaultOnce = true;
             }
-            // Is custom language
-            else
-            {
-                // Find file
-                string filePath = ResolveLanguageFilePath(language);
-                if (filePath.IsBlank()) return;
-                if (!File.Exists(filePath)) return;
 
-                // Load data
-                string data = File.ReadAllText(filePath);
-                JsonConvert.PopulateObject(data, this);
-            }
+            // Find file
+            string filePath = ResolveLanguageFilePath(language);
+            if (filePath.IsBlank()) return false;
+            if (!File.Exists(filePath)) return false;
+
+            // Load data
+            string data = File.ReadAllText(filePath);
+            JsonConvert.PopulateObject(data, this);
 
             // Raise a change event for all properties
             // ReSharper disable once ExplicitCallerInfoArgument
             RaisePropertyChanged(string.Empty);
+            return true;
         }
 
         public string Localize(TaskExecutionStatus value)

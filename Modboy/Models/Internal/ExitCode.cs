@@ -16,5 +16,6 @@ namespace Modboy.Models.Internal
         AlreadyRunning,
         NotElevated,
         UpdateInstallerExecuted,
+        LanguageFileNotFound
     }
 }

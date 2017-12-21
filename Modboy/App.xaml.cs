@@ -144,7 +144,23 @@ namespace Modboy
 
             // Load settings, language
             Settings.Stager.TryLoad();
-            Localization.Current.LoadLanguageFile(Settings.Stager.Current.Language);
+            var languageLoadSuccessful = Localization.Current.LoadLanguageFile(Settings.Stager.Current.Language);
+            if (!languageLoadSuccessful)
+            {
+                string language;
+                if (Settings.Stager.Current.Language == Localization.DefaultLanguage)
+                {
+                    language = Localization.DefaultLanguage;
+                }
+                else
+                {
+                    language = $"{Localization.DefaultLanguage} or {Settings.Stager.Current.Language}";
+                }
+                MessageBoxResult result = MessageBox.Show($"Language file for {language} is missing!", "Error", MessageBoxButton.OK);
+                Logger.Record($"Failed to find language file for {language}");
+                Current.Shutdown((int)ExitCode.LanguageFileNotFound);
+                return;
+            }
 
             // Log launch
             Logger.Record("Started successfully");

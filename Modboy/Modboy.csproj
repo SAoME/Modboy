@@ -292,6 +292,9 @@
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Resources\Languages\English.lng">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Resources\Languages\Spanish.lng">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
