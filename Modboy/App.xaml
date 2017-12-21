@@ -1,7 +1,7 @@
 <Application x:Class="Modboy.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:converters="clr-namespace:NegativeLayer.WPFExtensions.Converters;assembly=WPFExtensions"
+             xmlns:converters="clr-namespace:Tyrrrz.WpfExtensions.Converters;assembly=WpfExtensions"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dragablz="http://dragablz.net/winfx/xaml/dragablz"
              xmlns:local="clr-namespace:Modboy"
@@ -18,7 +18,7 @@
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Dragablz;component/Themes/materialdesign.xaml" />
-                <ResourceDictionary Source="pack://application:,,,/WPFExtensions;component/ConvertersDictionary.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Tyrrrz.WpfExtensions;component/ConvertersDictionary.xaml" />
             </ResourceDictionary.MergedDictionaries>
 
             <!--  Colors  -->

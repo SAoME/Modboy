@@ -17,7 +17,7 @@ using Modboy.Models.Internal;
 using Modboy.Services;
 using Modboy.Views;
 using NegativeLayer.Extensions;
-using NegativeLayer.WPFExtensions;
+using Tyrrrz.WpfExtensions;
 
 namespace Modboy.ViewModels
 {

@@ -86,13 +86,13 @@
                         Command="{Binding Button1Command}"
                         Content="{Binding Button1Text}"
                         Visibility="{Binding Button1Visible,
-                                             Converter={StaticResource BoolToVisibilityConverter},
+                                             Converter={StaticResource BooleanToVisibilityConverter},
                                              ConverterParameter=Collapsed}" />
                 <Button Margin="10"
                         Command="{Binding Button2Command}"
                         Content="{Binding Button2Text}"
                         Visibility="{Binding Button2Visible,
-                                             Converter={StaticResource BoolToVisibilityConverter},
+                                             Converter={StaticResource BooleanToVisibilityConverter},
                                              ConverterParameter=Collapsed}" />
             </UniformGrid>
         </Grid>

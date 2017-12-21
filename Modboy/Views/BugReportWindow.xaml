@@ -34,7 +34,7 @@
                    TextAlignment="Center"
                    TextWrapping="Wrap"
                    Visibility="{Binding IsCrashReport,
-                                        Converter={StaticResource BoolToVisibilityConverter},
+                                        Converter={StaticResource BooleanToVisibilityConverter},
                                         ConverterParameter=Collapsed}" />
         <TextBlock Text="{Binding Localization.BugReport_Message, StringFormat=\{0\}:}" />
         <TextBox Height="100"

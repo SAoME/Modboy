@@ -14,7 +14,7 @@ using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 using Modboy.Models.EventArgs;
 using Modboy.Models.Internal;
-using NegativeLayer.WPFExtensions;
+using Tyrrrz.WpfExtensions;
 
 namespace Modboy.Services
 {

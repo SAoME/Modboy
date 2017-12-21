@@ -13,12 +13,11 @@ using System.Windows.Forms;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
-using Modboy.Models.API;
 using Modboy.Models.Internal;
 using Modboy.Services;
 using NegativeLayer.Extensions;
 using NegativeLayer.Settings;
-using NegativeLayer.WPFExtensions;
+using Tyrrrz.WpfExtensions;
 
 namespace Modboy.ViewModels
 {

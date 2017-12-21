@@ -10,7 +10,7 @@ using System;
 using System.Windows;
 using Modboy.Models.Internal;
 using NegativeLayer.Extensions;
-using NegativeLayer.WPFExtensions;
+using Tyrrrz.WpfExtensions;
 
 namespace Modboy.Services
 {

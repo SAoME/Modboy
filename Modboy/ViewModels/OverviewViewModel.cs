@@ -19,9 +19,9 @@ using GalaSoft.MvvmLight.Threading;
 using Modboy.Models.Internal;
 using Modboy.Services;
 using NegativeLayer.Extensions;
-using NegativeLayer.WPFExtensions;
 using Task = Modboy.Models.Internal.Task;
 using OrigTask = System.Threading.Tasks.Task;
+using Tyrrrz.WpfExtensions;
 
 namespace Modboy.ViewModels
 {

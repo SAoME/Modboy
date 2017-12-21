@@ -14,8 +14,8 @@ using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 using Modboy.Models.Internal;
 using NegativeLayer.Extensions;
-using NegativeLayer.WPFExtensions;
 using Newtonsoft.Json;
+using Tyrrrz.WpfExtensions;
 
 namespace Modboy.Services
 {

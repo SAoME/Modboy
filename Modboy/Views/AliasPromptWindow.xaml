@@ -56,7 +56,7 @@
                     Margin="10"
                     Command="{Binding LocateCommand}"
                     Visibility="{Binding LocateButtonVisible,
-                                         Converter={StaticResource BoolToVisibilityConverter}}">
+                                         Converter={StaticResource BooleanToVisibilityConverter}}">
                 <materialDesign:PackIcon Width="24"
                                          Height="24"
                                          Kind="DotsHorizontal" />

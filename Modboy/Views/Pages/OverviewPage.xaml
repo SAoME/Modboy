@@ -186,7 +186,7 @@
                                     VerticalAlignment="Stretch"
                                     Background="{Binding Background, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type materialDesign:Card}}}"
                                     Style="{StaticResource AnimatedVisibility}"
-                                    Visibility="{Binding IsExpanded, Converter={StaticResource BoolToVisibilityConverter}}">
+                                    Visibility="{Binding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
@@ -311,7 +311,7 @@
                                                                                           AncestorType={x:Type materialDesign:Card}}}"
                                       Style="{StaticResource AnimatedVisibility}"
                                       Visibility="{Binding IsExpanded,
-                                                           Converter={StaticResource BoolToVisibilityConverter}}">
+                                                           Converter={StaticResource BooleanToVisibilityConverter}}">
                                     <WrapPanel HorizontalAlignment="Center">
                                         <Button Margin="1,0,1,0"
                                                 Command="{Binding OverviewViewModel.AbortCommand,
@@ -322,7 +322,7 @@
                                                 ToolTip="{Binding OverviewViewModel.Localization.Overview_Abort,
                                                                   Source={StaticResource Locator}}"
                                                 Visibility="{Binding IsAbortVisible,
-                                                                     Converter={StaticResource BoolToVisibilityConverter},
+                                                                     Converter={StaticResource BooleanToVisibilityConverter},
                                                                      ConverterParameter=Collapsed}">
                                             <materialDesign:PackIcon Width="24"
                                                                      Height="24"
@@ -335,7 +335,7 @@
                                                 ToolTip="{Binding OverviewViewModel.Localization.Overview_Verify,
                                                                   Source={StaticResource Locator}}"
                                                 Visibility="{Binding IsReinstallVisible,
-                                                                     Converter={StaticResource BoolToVisibilityConverter},
+                                                                     Converter={StaticResource BooleanToVisibilityConverter},
                                                                      ConverterParameter=Collapsed}">
                                             <materialDesign:PackIcon Width="24"
                                                                      Height="24"
@@ -348,7 +348,7 @@
                                                 ToolTip="{Binding OverviewViewModel.Localization.Overview_Reinstall,
                                                                   Source={StaticResource Locator}}"
                                                 Visibility="{Binding IsReinstallVisible,
-                                                                     Converter={StaticResource BoolToVisibilityConverter},
+                                                                     Converter={StaticResource BooleanToVisibilityConverter},
                                                                      ConverterParameter=Collapsed}">
                                             <materialDesign:PackIcon Width="24"
                                                                      Height="24"
@@ -361,7 +361,7 @@
                                                 ToolTip="{Binding OverviewViewModel.Localization.Overview_Uninstall,
                                                                   Source={StaticResource Locator}}"
                                                 Visibility="{Binding IsUninstallVisible,
-                                                                     Converter={StaticResource BoolToVisibilityConverter},
+                                                                     Converter={StaticResource BooleanToVisibilityConverter},
                                                                      ConverterParameter=Collapsed}">
                                             <materialDesign:PackIcon Width="24"
                                                                      Height="24"
@@ -383,7 +383,7 @@
                                 <Grid Grid.Row="3"
                                       Background="{DynamicResource PrimaryHueDarkBrush}"
                                       Visibility="{Binding IsStatusVisible,
-                                                           Converter={StaticResource BoolToVisibilityConverter},
+                                                           Converter={StaticResource BooleanToVisibilityConverter},
                                                            ConverterParameter=Collapsed}">
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />

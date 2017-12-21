@@ -11,10 +11,9 @@ using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
-using Modboy.Models.Database;
 using Modboy.Services;
 using NegativeLayer.Extensions;
-using NegativeLayer.WPFExtensions;
+using Tyrrrz.WpfExtensions;
 
 namespace Modboy.ViewModels
 {
