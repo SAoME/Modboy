@@ -28,9 +28,11 @@ namespace Modboy.ViewModels
             // Defaults
             CreditsText =
                 "Alexey Golub --- Client-Side Programmer" + Environment.NewLine +
+                "Steve Elliott --- Client-Side Programmer" + Environment.NewLine +
                 "Tom Pittlik --- Server-Side Programmer" + Environment.NewLine +
                 Environment.NewLine +
-                "Tatu Eugen --- Romanian Translation";
+                "Tatu Eugen --- Romanian Translation" + Environment.NewLine +
+                "Ezequiel-TM --- Spanish Translation" + Environment.NewLine +
 
             // Commands
             MoreInfoCommand = new RelayCommand(MoreInfo);
