@@ -26,6 +26,7 @@ namespace Modboy.Models.Internal
         private bool _isReinstallVisible;
         private bool _isUninstallVisible;
         private bool _isAborted;
+		private bool _isInstalledDateVisible;
 
         public ModStatusState State
         {
@@ -48,8 +49,13 @@ namespace Modboy.Models.Internal
         public bool IsExpanded
         {
             get { return _isExpanded; }
-            set { Set(ref _isExpanded, value); }
+            set {
+                Set(ref _isExpanded, value);
+                RaisePropertyChanged(nameof(IsCollapsed));
+            }
         }
+
+        public bool IsCollapsed => !IsExpanded;
 
         public string StatusText
         {
@@ -90,7 +96,10 @@ namespace Modboy.Models.Internal
         public bool IsUninstallVisible
         {
             get { return _isUninstallVisible; }
-            set { Set(ref _isUninstallVisible, value); }
+            set {
+				Set(ref _isUninstallVisible, value);
+				RaisePropertyChanged(nameof(IsInstalledDateVisible));
+			}
         }
 
         public bool IsAborted
@@ -98,6 +107,8 @@ namespace Modboy.Models.Internal
             get { return _isAborted; }
             set { Set(ref _isAborted, value); }
         }
+
+		public bool IsInstalledDateVisible => IsUninstallVisible;
 
         public ModStatus(ModInfo modInfo, InstalledModEntry installedModEntry)
         {

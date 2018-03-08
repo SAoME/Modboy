@@ -24,7 +24,6 @@ namespace Modboy.Models.API
         private string _categoryName;
         private string _gameName;
         private string _ownerName;
-        private string _description;
         private string _name;
         private DateTime _timeAdded;
 

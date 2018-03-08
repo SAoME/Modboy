@@ -38,6 +38,15 @@ namespace Modboy.ViewModels
 
         public Localization Localization { get; } = Localization.Current;
 
+		private bool _displayAsGrid = true;
+        public bool DisplayAsGrid {
+			get { return _displayAsGrid; }
+			private set {
+				Set(ref _displayAsGrid, value);
+				RaisePropertyChanged(nameof(DisplayAsList));
+			}
+		}
+        public bool DisplayAsList => !DisplayAsGrid;
         public ObservableCollection<ModStatus> Mods { get; } = new ObservableCollection<ModStatus>();
         public ModStatus ExpandedModStatus { get; private set; }
 
@@ -99,6 +108,7 @@ namespace Modboy.ViewModels
         public RelayCommand<ModStatus> ToggleExpandCommand { get; }
         public RelayCommand<ModStatus> ExpandCommand { get; }
         public RelayCommand<ModStatus> UnexpandCommand { get; }
+		public RelayCommand ToggleListMode { get; }
         public RelayCommand ClearFilters { get; }
         public RelayCommand<(SubmissionType, string, string)> AbortCommand { get; }
         public RelayCommand<(SubmissionType, string, string)> OpenModPageCommand { get; }
@@ -119,6 +129,7 @@ namespace Modboy.ViewModels
             ToggleExpandCommand = new RelayCommand<ModStatus>(ToggleExpand);
             ExpandCommand = new RelayCommand<ModStatus>(Expand);
             UnexpandCommand = new RelayCommand<ModStatus>(Unexpand);
+			ToggleListMode = new RelayCommand(() => DisplayAsGrid = !DisplayAsGrid);
             ClearFilters = new RelayCommand(() => NameFilter = GameFilter = null,
                 () => NameFilter.IsNotBlank() || GameFilter.IsNotBlank());
             AbortCommand = new RelayCommand<(SubmissionType, string, string)>(Abort);
