@@ -19,6 +19,7 @@ using GalaSoft.MvvmLight.Threading;
 using Modboy.Models.Internal;
 using Modboy.Services;
 using NegativeLayer.Extensions;
+using NegativeLayer.Settings;
 using Task = Modboy.Models.Internal.Task;
 using OrigTask = System.Threading.Tasks.Task;
 using Tyrrrz.WpfExtensions;
@@ -32,73 +33,71 @@ namespace Modboy.ViewModels
         private readonly WindowService _windowService;
         private readonly APIService _apiService = new APIService();
 
-        private readonly TaskFactory _taskFactory = new TaskFactory(TaskCreationOptions.PreferFairness,
+		public SettingsManagerStager<Settings> Stager { get; } = Settings.Stager;
+		public Settings CurrentSettings => Stager.Current;
+		public Settings StagingSettings => Stager.Staging;
+
+		private readonly TaskFactory _taskFactory = new TaskFactory(TaskCreationOptions.PreferFairness,
             TaskContinuationOptions.PreferFairness);
         private readonly ICollectionView _collectionView;
 
         public Localization Localization { get; } = Localization.Current;
 
-		private bool _displayAsGrid = true;
-        public bool DisplayAsGrid {
-			get { return _displayAsGrid; }
-			private set {
-				Set(ref _displayAsGrid, value);
-				RaisePropertyChanged(nameof(DisplayAsList));
-			}
-		}
-        public bool DisplayAsList => !DisplayAsGrid;
+		public bool DisplayAsGrid => CurrentSettings.DisplayAsGrid;
+		public bool DisplayAsList => !DisplayAsGrid;
+
         public ObservableCollection<ModStatus> Mods { get; } = new ObservableCollection<ModStatus>();
         public ModStatus ExpandedModStatus { get; private set; }
 
         private string[] _availableGameFilters;
         public string[] AvailableGameFilters
-        {
-            get { return _availableGameFilters; }
-            private set { Set(ref _availableGameFilters, value); }
-        }
+		{
+			get => _availableGameFilters;
+			private set { Set(ref _availableGameFilters, value); }
+		}
 
-        private string[] _availableSortingMethods;
+		private string[] _availableSortingMethods;
         public string[] AvailableSortingMethods
-        {
-            get { return _availableSortingMethods; }
-            private set { Set(ref _availableSortingMethods, value); }
-        }
+		{
+			get => _availableSortingMethods;
+			private set { Set(ref _availableSortingMethods, value); }
+		}
 
-        private string _nameFilter;
+		private string _nameFilter;
         public string NameFilter
-        {
-            get { return _nameFilter; }
-            set
-            {
-                Set(ref _nameFilter, value);
-                UpdateFilter();
-            }
-        }
+		{
+			get => _nameFilter;
+			set
+			{
+				Set(ref _nameFilter, value);
+				UpdateFilter();
+			}
+		}
 
-        private string _gameFilter;
+		private string _gameFilter;
         public string GameFilter
-        {
-            get { return _gameFilter; }
-            set
-            {
-                Set(ref _gameFilter, value);
-                UpdateFilter();
-            }
-        }
+		{
+			get => _gameFilter;
+			set
+			{
+				Set(ref _gameFilter, value);
+				UpdateFilter();
+			}
+		}
 
-        private OverviewSortingMethod _sortingMethod = OverviewSortingMethod.Name;
+		private OverviewSortingMethod _sortingMethod = OverviewSortingMethod.Name;
         public OverviewSortingMethod SortingMethod
-        {
-            get { return _sortingMethod; }
-            set
-            {
-                Set(ref _sortingMethod, value);
-                RaisePropertyChanged(() => SortingMethodIndex);
-                UpdateSorting();
-            }
-        }
+		{
+			get => _sortingMethod;
+			set
+			{
+				Set(ref _sortingMethod, value);
+				RaisePropertyChanged(() => SortingMethodIndex);
+				UpdateSorting();
+			}
+		}
 
-        public int SortingMethodIndex
+		public int SortingMethodIndex
         {
             get { return (int) SortingMethod; }
             set { SortingMethod = (OverviewSortingMethod) value; }
@@ -129,7 +128,7 @@ namespace Modboy.ViewModels
             ToggleExpandCommand = new RelayCommand<ModStatus>(ToggleExpand);
             ExpandCommand = new RelayCommand<ModStatus>(Expand);
             UnexpandCommand = new RelayCommand<ModStatus>(Unexpand);
-			ToggleListMode = new RelayCommand(() => DisplayAsGrid = !DisplayAsGrid);
+			ToggleListMode = new RelayCommand(ToggleDisplayAsGrid);
             ClearFilters = new RelayCommand(() => NameFilter = GameFilter = null,
                 () => NameFilter.IsNotBlank() || GameFilter.IsNotBlank());
             AbortCommand = new RelayCommand<(SubmissionType, string, string)>(Abort);
@@ -257,18 +256,35 @@ namespace Modboy.ViewModels
 
         private void Unexpand(ModStatus modStatus)
         {
-            if (ExpandedModStatus == modStatus)
-                ExpandedModStatus = null;
+			if (ExpandedModStatus == modStatus)
+			{
+				ExpandedModStatus = null;
+			}
             modStatus.IsExpanded = false;
         }
 
         private void ToggleExpand(ModStatus modStatus)
         {
-            if (modStatus.IsExpanded)
-                Unexpand(modStatus);
-            else
-                Expand(modStatus);
+			if (modStatus.IsExpanded)
+			{
+				Unexpand(modStatus);
+			}
+			else
+			{
+				Expand(modStatus);
+			}
         }
+
+		private void ToggleDisplayAsGrid()
+		{
+			StagingSettings.DisplayAsGrid = !CurrentSettings.DisplayAsGrid;
+			if (!StagingSettings.IsSaved)
+			{
+				Stager.Save();
+			}
+			RaisePropertyChanged(nameof(DisplayAsGrid));
+			RaisePropertyChanged(nameof(DisplayAsList));
+		}
 
         private void Abort((SubmissionType, string, string) tuple)
         {

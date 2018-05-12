@@ -24,6 +24,7 @@ namespace Modboy
         private bool _useBackup;
         private string _backupPath;
         private bool _showNotifications;
+		private bool _displayAsGrid;
         private bool _autoUpdate;
 
         public string Language
@@ -35,7 +36,7 @@ namespace Modboy
         public string ComputerName
         {
             get { return _computerName; }
-            set {Set(ref _computerName, value); }
+            set { Set(ref _computerName, value); }
         }
 
         public string TempDownloadPath
@@ -62,6 +63,12 @@ namespace Modboy
             set { Set(ref _showNotifications, value); }
         }
 
+		public bool DisplayAsGrid
+		{
+			get { return _displayAsGrid; }
+			set { Set(ref _displayAsGrid, value); }
+		}
+
         public bool AutoUpdate
         {
             get { return _autoUpdate; }
@@ -78,8 +85,9 @@ namespace Modboy
             _tempDownloadPath = Path.Combine(FileSystem.StorageDirectory, "Temp");
             _useBackup = true;
             _backupPath = Path.Combine(FileSystem.StorageDirectory, "Backups");
-            _autoUpdate = true;
-            _showNotifications = true;
+			_showNotifications = true;
+			_displayAsGrid = true;
+			_autoUpdate = true;
         }
     }
 }
