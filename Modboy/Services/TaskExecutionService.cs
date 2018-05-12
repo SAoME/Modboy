@@ -263,14 +263,15 @@ namespace Modboy.Services
             var extractSuccess = _archivingService.ExtractFiles(downloadedFile.FullName, unpackedDir);
             if (!extractSuccess || !Directory.Exists(unpackedDir))
             {
-                if ("application/x-rar-compressed".Equals(contentType))
-                {
-                    _windowService.ShowErrorWindowAsync(Localization.Current.Task_Install_Unpack_Failed_RAR5).GetResult();
-                }
-                else
-                {
-                    _windowService.ShowErrorWindowAsync(Localization.Current.Task_Install_Unpack_Failed).GetResult();
-                }
+				// Note: RAR5 supported now, but might be useful for future formats
+                //if ("application/x-rar-compressed".Equals(contentType))
+                //{
+                //    _windowService.ShowErrorWindowAsync(Localization.Current.Task_Install_Unpack_Failed_RAR5).GetResult();
+                //}
+                //else
+                //{
+                _windowService.ShowErrorWindowAsync(Localization.Current.Task_Install_Unpack_Failed).GetResult();
+                //}
                 return false;
             }
             if (IsAbortPending)

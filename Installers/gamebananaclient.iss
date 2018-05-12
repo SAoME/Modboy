@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Modboy"
-#define MyAppVersion "3.4"
+#define MyAppVersion "3.5"
 #define MyAppPublisher "GameBanana"
 #define MyAppURL "https://www.gamebanana.com/"
 #define MyAppExeName "Modboy.exe"
