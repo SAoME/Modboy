@@ -435,7 +435,7 @@
             <ItemsControl ItemsSource="{Binding Mods}">
                 <ItemsControl.ItemsPanel>
                     <ItemsPanelTemplate>
-                        <Grid VerticalAlignment="Top" />
+                        <StackPanel VerticalAlignment="Top" />
                     </ItemsPanelTemplate>
                 </ItemsControl.ItemsPanel>
                 <ItemsControl.ItemTemplate>
