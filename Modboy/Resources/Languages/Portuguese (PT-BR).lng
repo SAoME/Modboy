@@ -34,6 +34,7 @@
     "History_TaskCompletedUnsuccessfully": "Tarefa [{0}] de [{1}] completada com falha",
     "History_Date": "Data",
     "History_Event": "Evento",
+    "History_Link": "Link",
     "History_Clear": "Limpar historico",
 
     "Main_Overview": "Mods",

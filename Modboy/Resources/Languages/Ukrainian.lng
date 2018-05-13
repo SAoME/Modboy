@@ -34,6 +34,7 @@
     "History_TaskCompletedUnsuccessfully": "Задача [{0}] для моду [{1}] не була виконана",
     "History_Date": "Дата",
     "History_Event": "Подія",
+    "History_Link": "Посилання",
     "History_Clear": "Очистити",
 
     "Main_Overview": "Моди",

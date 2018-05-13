@@ -22,14 +22,16 @@ namespace Modboy.Models.Database
         public bool Success { get; set; }
         public string ModId { get; set; }
         public string ModName { get; set; }
+		public string ModUrl { get; set; }
 
-        public HistoryEntry(DateTime date, TaskType taskType, bool success, string modId, string modName)
+        public HistoryEntry(DateTime date, TaskType taskType, bool success, string modId, string modName, string modUrl)
         {
             Date = date;
             TaskType = taskType;
             Success = success;
             ModId = modId;
             ModName = modName ?? modId;
+			ModUrl = modUrl;
         }
 
         public HistoryEntry() { }

@@ -38,7 +38,9 @@ namespace Modboy.Services
                 args.Task.TaskType,
                 args.Success,
                 args.Task.FileId,
-                modInfo?.Name));
+                modInfo?.Name,
+				modInfo?.PageUrl
+			));
         }
 
         private void RecordEvent(HistoryEntry entry)

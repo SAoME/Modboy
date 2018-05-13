@@ -22,19 +22,27 @@
             <Button Command="{Binding ClearHistoryCommand}" Content="{Binding Localization.History_Clear}" />
         </WrapPanel>
 
-        <DataGrid Grid.Row="1"
-                  AutoGenerateColumns="False"
-                  CanUserAddRows="False"
-                  CanUserDeleteRows="False"
-                  HeadersVisibility="Column"
-                  IsReadOnly="True"
-                  ItemsSource="{Binding History}">
+        <DataGrid
+            Grid.Row="1"
+            AutoGenerateColumns="False"
+            CanUserAddRows="False"
+            CanUserDeleteRows="False"
+            HeadersVisibility="Column"
+            IsReadOnly="True"
+            ItemsSource="{Binding History}">
             <DataGrid.Columns>
                 <DataGridTextColumn Width="Auto" Binding="{Binding Date}">
                     <DataGridTextColumn.Header>
                         <TextBlock Text="{Binding HistoryViewModel.Localization.History_Date, Source={StaticResource Locator}}" />
                     </DataGridTextColumn.Header>
                 </DataGridTextColumn>
+                <DataGridHyperlinkColumn Width="Auto" Binding="{Binding ModUrl}" ContentBinding="{Binding HistoryViewModel.Localization.History_Link, Source={StaticResource Locator}}" >
+                    <DataGridHyperlinkColumn.ElementStyle>
+                        <Style TargetType="TextBlock">
+                            <EventSetter Event="Hyperlink.RequestNavigate" Handler="OnRequestNavigateHyperlink" />
+                        </Style>
+                    </DataGridHyperlinkColumn.ElementStyle>
+                </DataGridHyperlinkColumn>
                 <DataGridTextColumn Width="*" Binding="{Binding EventDescription}">
                     <DataGridTextColumn.Header>
                         <TextBlock Text="{Binding HistoryViewModel.Localization.History_Event, Source={StaticResource Locator}}" />

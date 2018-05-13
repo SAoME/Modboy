@@ -23,11 +23,13 @@ namespace Modboy.ViewModels
         {
             public DateTime Date { get; } 
             public string EventDescription { get; }
+			public string ModUrl { get; }
 
-            public HistoryViewEntry(DateTime date, string eventDescription)
+            public HistoryViewEntry(DateTime date, string eventDescription, string modUrl)
             {
                 Date = date;
                 EventDescription = eventDescription;
+				ModUrl = modUrl;
             }
         }
 
@@ -60,15 +62,17 @@ namespace Modboy.ViewModels
             _historyService.HistoryEntryRecorded += (sender, args) =>
             {
                 DispatcherHelper.UIDispatcher.InvokeSafe(
-                    () => History.Insert(0, new HistoryViewEntry(args.Entry.Date, Localization.Localize(args.Entry))));
+                    () => History.Insert(0, new HistoryViewEntry(args.Entry.Date, Localization.Localize(args.Entry), args.Entry.ModUrl)));
             };
         }
 
         private void PopulateHistory()
         {
             History.Clear();
-            foreach (var entry in _historyService.GetHistory())
-                History.Add(new HistoryViewEntry(entry.Date, Localization.Localize(entry)));
+			foreach (var entry in _historyService.GetHistory())
+			{
+				History.Add(new HistoryViewEntry(entry.Date, Localization.Localize(entry), entry.ModUrl));
+			}
         }
     }
 }

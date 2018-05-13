@@ -92,7 +92,8 @@ namespace Modboy
         public string History_TaskCompletedUnsuccessfully { get; set; }
         public string History_Date { get; set; }
         public string History_Event { get; set; }
-        public string History_Clear { get; set; }
+		public string History_Link { get; set; }
+		public string History_Clear { get; set; }
 
         public string Main_Overview { get; set; }
         public string Main_History { get; set; }
