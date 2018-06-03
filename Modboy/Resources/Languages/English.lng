@@ -49,6 +49,7 @@
     "Overview_NameFilter": "Name",
     "Overview_GameFilter": "Game",
     "Overview_Sorting": "Sorting",
+    "Overview_TaskType": "Task Type",
     "Overview_InstallDate": "Installed on",
     "Overview_InQueue": "In queue",
     "Overview_Installed": "Installed",

@@ -107,6 +107,7 @@ namespace Modboy
         public string Overview_NameFilter { get; set; }
         public string Overview_GameFilter { get; set; }
         public string Overview_Sorting { get; set; }
+		public string Overview_TaskType { get; set; }
         public string Overview_InstallDate { get; set; }
         public string Overview_InQueue { get; set; }
         public string Overview_Installed { get; set; }

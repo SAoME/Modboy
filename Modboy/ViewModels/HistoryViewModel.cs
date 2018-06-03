@@ -11,6 +11,7 @@ using System.Collections.ObjectModel;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.CommandWpf;
 using GalaSoft.MvvmLight.Threading;
+using Modboy.Models.Internal;
 using Modboy.Services;
 using NegativeLayer.Extensions;
 using Tyrrrz.WpfExtensions;
@@ -21,19 +22,34 @@ namespace Modboy.ViewModels
     {
         public class HistoryViewEntry
         {
-            public DateTime Date { get; } 
+            public DateTime Date { get; }
+			public TaskType TaskType { get; }
             public string EventDescription { get; }
 			public string ModUrl { get; }
 
-            public HistoryViewEntry(DateTime date, string eventDescription, string modUrl)
+            public HistoryViewEntry(DateTime date, TaskType taskType, string eventDescription, string modUrl)
             {
                 Date = date;
+				TaskType = taskType;
                 EventDescription = eventDescription;
 				ModUrl = modUrl;
             }
         }
 
         private readonly HistoryService _historyService;
+
+		public string[] TaskTypes { get; } = typeof(TaskType).GetEnumNames();
+
+		private string _taskTypeFilter;
+		public string TaskTypeFilter
+		{
+			get => _taskTypeFilter;
+			set
+			{
+				Set(ref _taskTypeFilter, value);
+				PopulateHistory();
+			}
+		}
 
         public Localization Localization { get; } = Localization.Current;
 
@@ -42,6 +58,7 @@ namespace Modboy.ViewModels
 
         // Commands
         public RelayCommand ClearHistoryCommand { get; }
+		public RelayCommand ClearFilters { get; }
 
         public HistoryViewModel(HistoryService historyService)
         {
@@ -53,6 +70,10 @@ namespace Modboy.ViewModels
                 _historyService.ClearHistory();
                 PopulateHistory();
             });
+			ClearFilters = new RelayCommand(
+				() => TaskTypeFilter = null,
+				() => TaskTypeFilter.IsNotBlank()
+			);
 
             // Initial population
             PopulateHistory();
@@ -61,18 +82,23 @@ namespace Modboy.ViewModels
             Localization.PropertyChanged += (sender, args) => PopulateHistory();
             _historyService.HistoryEntryRecorded += (sender, args) =>
             {
-                DispatcherHelper.UIDispatcher.InvokeSafe(
-                    () => History.Insert(0, new HistoryViewEntry(args.Entry.Date, Localization.Localize(args.Entry), args.Entry.ModUrl)));
+				if (TaskTypeFilter.IsBlank() || args.Entry.TaskType.ToString().Equals(TaskTypeFilter))
+				{
+					DispatcherHelper.UIDispatcher.InvokeSafe(
+						() => History.Insert(0, new HistoryViewEntry(args.Entry.Date, args.Entry.TaskType, Localization.Localize(args.Entry), args.Entry.ModUrl)));
+				}
             };
         }
 
         private void PopulateHistory()
         {
             History.Clear();
-			foreach (var entry in _historyService.GetHistory())
+			var historyFiltered = TaskTypeFilter.IsBlank() ? _historyService.GetHistory() : _historyService.GetHistoryByTaskType((TaskType) Enum.Parse(typeof(TaskType), TaskTypeFilter));
+			foreach (var entry in historyFiltered)
 			{
-				History.Add(new HistoryViewEntry(entry.Date, Localization.Localize(entry), entry.ModUrl));
+				History.Add(new HistoryViewEntry(entry.Date, entry.TaskType, Localization.Localize(entry), entry.ModUrl));
 			}
-        }
+			ClearFilters.RaiseCanExecuteChanged();
+		}
     }
 }

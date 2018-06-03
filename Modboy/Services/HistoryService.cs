@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using Modboy.Models.Database;
 using Modboy.Models.EventArgs;
+using Modboy.Models.Internal;
 
 namespace Modboy.Services
 {
@@ -58,6 +59,11 @@ namespace Modboy.Services
         {
             return _databaseService.DB.Table<HistoryEntry>().OrderBy(he => he.Date).Take(top).ToArray();
         }
+
+		public HistoryEntry[] GetHistoryByTaskType(TaskType taskType)
+		{
+			return _databaseService.DB.Table<HistoryEntry>().Where(he => he.TaskType == taskType).OrderByDescending(he => he.RowID).ToArray();
+		}
 
         public void ClearHistory()
         {

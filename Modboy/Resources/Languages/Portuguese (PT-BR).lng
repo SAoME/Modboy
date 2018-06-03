@@ -49,6 +49,7 @@
     "Overview_NameFilter": "Nome",
     "Overview_GameFilter": "Jogo",
     "Overview_Sorting": "Ordem",
+    "Overview_TaskType": "Tipo de Tarefa",
     "Overview_InstallDate": "Instalado em",
     "Overview_InQueue": "Na fila",
     "Overview_Installed": "Instalado",

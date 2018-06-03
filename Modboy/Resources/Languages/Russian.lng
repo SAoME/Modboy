@@ -49,6 +49,7 @@
     "Overview_NameFilter": "Название",
     "Overview_GameFilter": "Игра",
     "Overview_Sorting": "Сортировка",
+    "Overview_TaskType": "Тип задачи",
     "Overview_InstallDate": "Установлен",
     "Overview_InQueue": "В очереди...",
     "Overview_Installed": "Установлено",
