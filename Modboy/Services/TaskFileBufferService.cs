@@ -14,18 +14,21 @@ using System.Windows;
 using GalaSoft.MvvmLight.Threading;
 using Modboy.Models.Internal;
 using Tyrrrz.WpfExtensions;
+using System;
 
 namespace Modboy.Services
 {
     public class TaskFileBufferService
     {
         private readonly TaskExecutionService _taskExecutionService;
+        private readonly WindowService _windowService;
 
         private readonly FileSystemWatcher _watcher;
 
-        public TaskFileBufferService(TaskExecutionService taskExecutionService)
+        public TaskFileBufferService(TaskExecutionService taskExecutionService, WindowService windowService)
         {
             _taskExecutionService = taskExecutionService;
+            _windowService = windowService;
 
             // Set up watcher
             string dir = Path.GetDirectoryName(FileSystem.TaskBufferFilePath);
@@ -64,11 +67,24 @@ namespace Modboy.Services
                 var subType = parts[1];
                 var subId = parts[2];
                 var fileId = parts[3];
+
+                SubmissionType parsedSubType;
+                try
+                {
+                    parsedSubType = subType.ParseEnum<SubmissionType>();
+                }
+                catch (ArgumentException ex)
+                {
+                    // Resume the watcher
+                    _watcher.EnableRaisingEvents = true;
+                    _windowService.ShowErrorWindowAsync(Localization.Current.Task_UnknownInstallationProcess).GetResult();
+                    return;
+                }
                 
                 _taskExecutionService.EnqueueTask(
                     new Task(
                         taskType.ParseEnum<TaskType>(),
-                        subType.ParseEnum<SubmissionType>(),
+                        parsedSubType,
                         subId,
                         fileId
                     )
