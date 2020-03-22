@@ -10,6 +10,7 @@
     "Task_Verify_Execute": "Проверяю файлы...",
     "Task_Install": "Устанавливаю...",
     "Task_Install_Download": "Качаю...",
+    "Task_Install_Download_Failed": "Загрузка не удалась, пожалуйста, попробуйте еще раз.",
     "Task_Install_Unpack": "Распаковываю...",
     "Task_Install_Unpack_Failed": "Распаковка не удалась, сообщите архив.",
     "Task_Install_Unpack_Failed_RAR5": "Распаковка не удалась. Проверьте, находится ли архив в формате RAR5, который еще не поддерживается.",

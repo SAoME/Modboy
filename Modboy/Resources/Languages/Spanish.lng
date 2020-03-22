@@ -10,6 +10,7 @@
     "Task_Verify_Execute": "Comprobando archivos...",
     "Task_Install": "Instalando...",
     "Task_Install_Download": "Descargando...",
+    "Task_Install_Download_Failed": "Descarga fallida, por favor intente nuevamente.",
     "Task_Install_Unpack": "Descomprimiendo...",
     "Task_Install_Unpack_Failed": "Error al descomprimir el archivo, reporte el archivo.",
     "Task_Install_Unpack_Failed_RAR5": "Error al descomprimir el archivo, archivos RAR5 no son compatibles todavia.",

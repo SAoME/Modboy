@@ -68,6 +68,7 @@ namespace Modboy
         public string Task_Verify_Execute { get; set; }
         public string Task_Install { get; set; }
         public string Task_Install_Download { get; set; }
+        public string Task_Install_Download_Failed { get; set; }
         public string Task_Install_Unpack { get; set; }
         public string Task_Install_Unpack_Failed { get; set; }
         public string Task_Install_Unpack_Failed_RAR5 { get; set; }

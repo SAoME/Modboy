@@ -246,6 +246,7 @@ namespace Modboy.Services
             var downloadedFileContainer = _webService.Download(fileInfo.DownloadUrl, FileSystem.CreateTempFile($"Mod_{modInfo.FileId}"));
             if (downloadedFileContainer == null)
             {
+                _windowService.ShowErrorWindowAsync(Localization.Current.Task_Install_Download_Failed).GetResult();
                 return false;
             }
             var contentType = downloadedFileContainer.ResponseHeaders[HttpResponseHeader.ContentType];

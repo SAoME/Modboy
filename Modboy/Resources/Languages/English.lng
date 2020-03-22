@@ -10,6 +10,7 @@
     "Task_Verify_Execute": "Verifying files...",
     "Task_Install": "Installing...",
     "Task_Install_Download": "Downloading...",
+    "Task_Install_Download_Failed": "Downloading failed, please try again.",
     "Task_Install_Unpack": "Unpacking...",
     "Task_Install_Unpack_Failed": "Unpacking failed, please report archive.",
     "Task_Install_Unpack_Failed_RAR5": "Unpacking failed. Please check if archive is in RAR5 format, which not yet supported.",
@@ -34,7 +35,7 @@
     "History_TaskCompletedUnsuccessfully": "Task [{0}] for mod [{1}] failed",
     "History_Date": "Date",
     "History_Event": "Event",
-    "History_Link":  "Link",
+    "History_Link": "Link",
     "History_Clear": "Clear History",
 
     "Main_Overview": "Mods",
