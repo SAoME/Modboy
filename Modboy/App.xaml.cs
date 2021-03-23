@@ -72,15 +72,20 @@ namespace Modboy
                 // find example at: https://dev.gamebanana.com/skins/150504?modboy
                 // ex: modboy://Skin,150504,363769
                 // Extract the input from the arguments
-                var regex = new Regex(Constants.ProtocolHandle + "(.+)",
+                var regex = new Regex(Constants.ProtocolHandle + "([A-Za-z]+),([0-9]+),([0-9]+)",
                     RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
-                string input = regex.Match(args[0]).Groups[1].Value;
+                if (!regex.IsMatch(args[0]))
+                {
+                    MessageBoxResult result = MessageBox.Show($"Modboy launched with malformed URL: {args[0]}", "Error", MessageBoxButton.OK);
+                    Logger.Record($"Modoby launched with malformed URL: {args[0]}");
+                    return;
+                }
+                var match = regex.Match(args[0]);
 
                 // Get the valuable data
-                var parts = input.SplitTrim(",");
-                var subType = parts[0];
-                var subId = parts[1];
-                var fileId = parts[2];
+                var subType = match.Groups[1].Value;
+                var subId = match.Groups[2].Value;
+                var fileId = match.Groups[3].Value;
 
                 // Create directory if necessary
                 if (!Directory.Exists(FileSystem.StorageDirectory))

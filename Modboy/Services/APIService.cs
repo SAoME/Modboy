@@ -24,9 +24,9 @@ namespace Modboy.Services
                 "fields=" +
                     "name," +
                     "Category().name," +
-                    "Url().sGetDownloadUrl()," +
+                    "Url().sDownloadUrl()," +
                     "Game().name," + 
-                    "Url().sGetProfileUrl()," +
+                    "Url().sProfileUrl()," +
                     "Url().sEmbeddablesUrl()," +
                     "Owner().name," +
                     "date" + "&" +

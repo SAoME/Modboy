@@ -2,9 +2,9 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Modboy"
-#define MyAppVersion "3.7"
+#define MyAppVersion "3.8"
 #define MyAppPublisher "GameBanana"
-#define MyAppURL "https://www.gamebanana.com/"
+#define MyAppURL "https://www.gamebanana.com/tools/6321"
 #define MyAppExeName "Modboy.exe"
 
 [Setup]
@@ -40,9 +40,12 @@ Source: "..\Modboy\bin\Release\*.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Modboy\bin\Release\{#MyAppName}.exe.config"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\Modboy\bin\Release\Resources\*"; DestDir: "{app}\Resources"; Flags: ignoreversion recursesubdirs
 
+[INI]
+Filename: {app}\modboy.url; Section: InternetShortcut; Key: URL; String: "{#MyAppURL}"
+
 [Icons]
 Name: "{group}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"
-Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{#MyAppURL}"
+Name: "{group}\{cm:ProgramOnTheWeb,{#MyAppName}}"; Filename: "{app}/modboy.url"
 Name: "{group}\{cm:UninstallProgram,{#MyAppName}}"; Filename: "{uninstallexe}"
 Name: "{commondesktop}\{#MyAppName}"; Filename: "{app}\{#MyAppExeName}"; Tasks: desktopicon
 
