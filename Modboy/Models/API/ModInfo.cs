@@ -22,6 +22,7 @@ namespace Modboy.Models.API
         private string _fileId;
 
         private string _categoryName;
+        private string _rootCategoryName;
         private string _gameName;
         private string _ownerName;
         private string _name;
@@ -60,6 +61,13 @@ namespace Modboy.Models.API
             get { return _categoryName; }
             set { Set(ref _categoryName, value); }
         }
+        
+        [JsonProperty("RootCategory().name")]
+        public string RootCategoryName
+        {
+            get { return _rootCategoryName; }
+            set { Set(ref _rootCategoryName, value); }
+        }
 
         [JsonProperty("Game().name")]
         public string GameName
@@ -75,8 +83,33 @@ namespace Modboy.Models.API
             set { Set(ref _ownerName, value); }
         }
 
+        private bool IsModSubmission => SubmissionType.Mod.Equals(SubmissionType);
+
+        public string ExtendedSubmissionType
+        {
+            get
+            {
+                if (IsModSubmission)
+                {
+                    if (!"Other/Misc".Equals(RootCategoryName))
+                    {
+                        return $"{SubmissionType} ({RootCategoryName})";
+                    }
+                }
+                return $"{SubmissionType}";
+            }
+        }
+
+        private string CategoryDescription
+        {
+            get
+            {
+                return IsModSubmission && RootCategoryName != null && !RootCategoryName.Equals(CategoryName) ? $"{RootCategoryName} > {CategoryName}" : CategoryName;
+            }
+        }
+
         [JsonProperty("description")]
-        public string Description => $"{GameName} {CategoryName} {SubmissionType}";
+        public string Description => $"{GameName} {CategoryDescription} {SubmissionType}";
 
         [JsonProperty("name")]
         public string Name

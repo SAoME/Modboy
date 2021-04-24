@@ -19,6 +19,7 @@ namespace Modboy.Models.Internal
         Skin,
         Sound,
         Spray,
-        Texture
+        Texture,
+        Mod
     }
 }

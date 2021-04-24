@@ -217,11 +217,33 @@
                                     <Grid.RowDefinitions>
                                         <RowDefinition Height="Auto" />
                                         <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
                                         <RowDefinition Height="*" />
                                     </Grid.RowDefinitions>
 
                                     <DockPanel
                                         Grid.Row="0"
+                                        HorizontalAlignment="Stretch"
+                                        VerticalAlignment="Top">
+                                        <TextBlock
+                                            Margin="10,0,0,0"
+                                            HorizontalAlignment="Left"
+                                            DockPanel.Dock="Left"
+                                            Text="{Binding
+                                                    OverviewViewModel.Localization.Overview_InstallDate,
+                                                    Source={StaticResource Locator},
+                                                    StringFormat='\{0\}: '}" />
+                                        <TextBlock
+                                            HorizontalAlignment="Left"
+                                            DockPanel.Dock="Left"
+                                            Foreground="{DynamicResource PrimaryTextBrush}"
+                                            Text="{Binding
+                                                    InstalledModEntry.InstallDate,
+                                                    StringFormat=\{0:g\}}" />
+                                        
+                                    </DockPanel>
+                                    <DockPanel
+                                        Grid.Row="1"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Top">
                                         <TextBlock
@@ -236,26 +258,11 @@
                                             HorizontalAlignment="Left"
                                             DockPanel.Dock="Left"
                                             Foreground="{DynamicResource PrimaryTextBrush}"
-                                            Text="{Binding ModInfo.SubmissionType}" />
-                                        <TextBlock
-                                            Margin="0,0,10,0"
-                                            HorizontalAlignment="Right"
-                                            DockPanel.Dock="Right"
-                                            Foreground="{DynamicResource PrimaryTextBrush}"
-                                            Text="{Binding
-                                                    InstalledModEntry.InstallDate,
-                                                    StringFormat=\{0:g\}}" />
-                                        <TextBlock
-                                            HorizontalAlignment="Right"
-                                            DockPanel.Dock="Right"
-                                            Text="{Binding
-                                                    OverviewViewModel.Localization.Overview_InstallDate,
-                                                    Source={StaticResource Locator},
-                                                    StringFormat='\{0\}: '}" />
+                                            Text="{Binding ModInfo.ExtendedSubmissionType}" />
                                     </DockPanel>
 
                                     <DockPanel
-                                        Grid.Row="1"
+                                        Grid.Row="2"
                                         HorizontalAlignment="Stretch"
                                         VerticalAlignment="Top">
                                         <TextBlock
@@ -286,7 +293,7 @@
                                                     StringFormat='\{0\}: '}" />
                                     </DockPanel>
 
-                                    <TextBlock Grid.Row="2"
+                                    <TextBlock Grid.Row="3"
                                                Margin="5"
                                                HorizontalAlignment="Center"
                                                VerticalAlignment="Center"
@@ -531,6 +538,7 @@
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
                                             <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="Auto" />
                                         </Grid.RowDefinitions>
                                         <StackPanel
                                             Grid.Column="0"
@@ -560,6 +568,23 @@
                                                 VerticalAlignment="Center"
                                                 FontWeight="Bold"
                                                 Text="{Binding
+                                                        OverviewViewModel.Localization.Overview_Type,
+                                                        Source={StaticResource Locator},
+                                                        StringFormat='\{0\}: '}" />
+                                            <TextBlock
+                                                FontSize="16"
+                                                VerticalAlignment="Center"
+                                                Text="{Binding ModInfo.ExtendedSubmissionType}" />
+                                        </StackPanel>
+                                        <StackPanel
+                                            Grid.Column="0"
+                                            Grid.Row="2"
+                                            Orientation="Horizontal">
+                                            <TextBlock
+                                                FontSize="16"
+                                                VerticalAlignment="Center"
+                                                FontWeight="Bold"
+                                                Text="{Binding
                                                         OverviewViewModel.Localization.Overview_SubmissionId,
                                                         Source={StaticResource Locator},
                                                         StringFormat='\{0\}: '}" />
@@ -583,7 +608,7 @@
                                         </StackPanel>
                                         <StackPanel
                                             Grid.Column="0"
-                                            Grid.Row="2"
+                                            Grid.Row="3"
                                             Orientation="Horizontal">
                                             <TextBlock
                                                 TextTrimming="CharacterEllipsis"
@@ -604,7 +629,7 @@
                                         <Grid
                                             Grid.Column="1"
                                             Grid.Row="0"
-                                            Grid.RowSpan="3">
+                                            Grid.RowSpan="4">
                                             <Grid.ColumnDefinitions>
                                                 <ColumnDefinition Width="*" />
                                                 <ColumnDefinition Width="*" />
